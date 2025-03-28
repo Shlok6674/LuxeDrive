@@ -1,0 +1,456 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sailing Through Kerala Backwaters</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+
+        .hero-wrap-2 {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            height: 60vh;
+            display: flex;
+            align-items: flex-end;
+            color: #fff;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .breadcrumbs {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumbs a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .breadcrumbs a:hover {
+            color: #ffcc00;
+        }
+
+        .bread {
+            font-size: 36px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .ftco-section {
+            padding: 80px 0;
+            background: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .tagcloud {
+            margin: 20px 0;
+        }
+
+        .tag-cloud-link {
+            display: inline-block;
+            padding: 8px 15px;
+            background: #e9ecef;
+            border-radius: 20px;
+            color: #555;
+            text-decoration: none;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+
+        .tag-cloud-link:hover {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .about-author {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .bio img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        .desc h3 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .comment-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .comment {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .vcard img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .comment-body h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .meta {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .reply {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .reply:hover {
+            text-decoration: underline;
+        }
+
+        .children {
+            list-style: none;
+            padding-left: 40px;
+        }
+
+        .comment-form-wrap {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        textarea.form-control {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            color: #fff;
+            font-weight: 500;
+            text-transform: uppercase;
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .sidebar {
+            padding-left: 20px;
+        }
+
+        .sidebar-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .search-form .form-group {
+            position: relative;
+        }
+
+        .search-form .icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .search-form .form-control {
+            padding-left: 40px;
+        }
+
+        .categories h3, .sidebar-box h3 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .categories li {
+            margin-bottom: 10px;
+        }
+
+        .categories a {
+            color: #555;
+            text-decoration: none;
+        }
+
+        .categories a:hover {
+            color: #007bff;
+        }
+
+        .block-21 {
+            display: flex;
+            align-items: center;
+        }
+
+        .blog-img {
+            width: 80px;
+            height: 80px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static 'images/blogbg.webp' %}');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-start">
+                <div class="col-md-9 ftco-animate pb-5">
+                    <p class="breadcrumbs">
+                        <span class="mr-2"><a href="{% url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span>
+                        <span class="mr-2"><a href="{% url 'blog' %}">Blog <i class="ion-ios-arrow-forward"></i></a></span>
+                        <span>Blog Single <i class="ion-ios-arrow-forward"></i></span>
+                    </p>
+                    <h1 class="mb-3 bread">Sailing Through Kerala Backwaters</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 ftco-animate">
+                    <h2 class="mb-3">A Journey Through Kerala's Tranquil Waters</h2>
+                    <p>Embark on a serene journey through the backwaters of Kerala, where lush greenery meets calm waters. A houseboat ride offers a unique blend of luxury and tradition, gliding past palm-lined shores and quaint villages.</p>
+                    <p>
+                        <img src="https://images.unsplash.com/photo-1593693396859-b27925c92c82?q=80&w=2070&auto=format&fit=crop" alt="Kerala Backwaters" class="img-fluid">
+                    </p>
+                    <p>The gentle sway of the boat, the sound of water lapping against the hull, and the sight of local fishermen casting their nets create an unforgettable experience. Kerala's backwaters are a testament to nature’s beauty and human ingenuity, with a network of canals, rivers, and lakes stretching over 900 kilometers.</p>
+                    <h2 class="mb-3 mt-5">Why Visit Kerala?</h2>
+                    <p>Beyond the backwaters, Kerala offers a rich tapestry of culture, cuisine, and history. From savoring spicy coconut-based curries to witnessing traditional Kathakali performances, every moment is a celebration of life.</p>
+                    <p>
+                        <img src="https://images.unsplash.com/photo-1604992743089-2ae914ba061e?q=80&w=2070&auto=format&fit=crop" alt="Kerala Culture" class="img-fluid">
+                    </p>
+                    <p>Whether you're a nature lover, a foodie, or a history buff, Kerala has something for everyone. The backwaters are just the beginning—explore the hill stations of Munnar or the beaches of Kovalam for a complete adventure.</p>
+
+                    <div class="tag-widget post-tag-container mb-5 mt-5">
+                        <div class="tagcloud">
+                            <a href="#" class="tag-cloud-link">Travel</a>
+                            <a href="#" class="tag-cloud-link">Kerala</a>
+                            <a href="#" class="tag-cloud-link">Backwaters</a>
+                            <a href="#" class="tag-cloud-link">India</a>
+                        </div>
+                    </div>
+
+                    <div class="about-author d-flex p-4">
+                        <div class="bio mr-5">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974&auto=format&fit=crop" alt="Author" class="img-fluid mb-4">
+                        </div>
+                        <div class="desc">
+                            <h3>Anita Sharma</h3>
+                            <p>A passionate traveler and writer, Anita explores India's hidden gems and shares stories that inspire wanderlust.</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-5 mt-5">
+                        <h3 class="mb-5">Comments (3)</h3>
+                        <ul class="comment-list">
+                            <li class="comment">
+                                <div class="vcard bio">
+                                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop" alt="User">
+                                </div>
+                                <div class="comment-body">
+                                    <h3>Priya Menon</h3>
+                                    <div class="meta">March 20, 2025 at 2:30pm</div>
+                                    <p>Amazing article! The backwaters are on my travel list now. Thanks for the vivid description!</p>
+                                    <p><a href="#" class="reply">Reply</a></p>
+                                </div>
+                            </li>
+                            <li class="comment">
+                                <div class="vcard bio">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" alt="User">
+                                </div>
+                                <div class="comment-body">
+                                    <h3>Rahul Nair</h3>
+                                    <div class="meta">March 21, 2025 at 10:15am</div>
+                                    <p>Loved the photos! Kerala is truly a paradise. Any tips for first-time visitors?</p>
+                                    <p><a href="#" class="reply">Reply</a></p>
+                                </div>
+                            </li>
+                            <li class="comment">
+                                <div class="vcard bio">
+                                    <img src="https://images.unsplash.com/photo-1487412723647-3b35ae6e12da?q=80&w=1974&auto=format&fit=crop" alt="User">
+                                </div>
+                                <div class="comment-body">
+                                    <h3>Neha Gupta</h3>
+                                    <div class="meta">March 21, 2025 at 3:45pm</div>
+                                    <p>The houseboat experience sounds magical. Can’t wait to plan my trip!</p>
+                                    <p><a href="#" class="reply">Reply</a></p>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div class="comment-form-wrap pt-5">
+                            <h3 class="mb-5">Leave a Comment</h3>
+                            <form action="#" class="p-5">
+                                <div class="form-group">
+                                    <label for="name">Name *</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="website">Website</label>
+                                    <input type="url" class="form-control" id="website">
+                                </div>
+                                <div class="form-group">
+                                    <label for="message">Message</label>
+                                    <textarea name="message" id="message" cols="30" rows="10" class="form-control" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Post Comment" class="btn btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 sidebar ftco-animate">
+                    <div class="sidebar-box">
+                        <form action="#" class="search-form">
+                            <div class="form-group">
+                                <span class="icon ion-ios-search"></span>
+                                <input type="text" class="form-control" placeholder="Search blog...">
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="sidebar-box ftco-animate">
+                        <h3>Categories</h3>
+                        <ul class="categories">
+                            <li><a href="#">Travel <span>(15)</span></a></li>
+                            <li><a href="#">Culture <span>(10)</span></a></li>
+                            <li><a href="#">Food <span>(8)</span></a></li>
+                            <li><a href="#">Adventure <span>(12)</span></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-box ftco-animate">
+                        <h3>Recent Posts</h3>
+                        <div class="block-21 mb-4 d-flex">
+                            <a class="blog-img mr-4" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop');"></a>
+                            <div class="text">
+                                <h3 class="heading"><a href="{% url 'blogsingle' %}">Majestic Forts of Rajasthan</a></h3>
+                                <div class="meta">
+                                    <div><a href="#">March 15, 2025</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-21 mb-4 d-flex">
+                            <a class="blog-img mr-4" style="background-image: url('https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=2071&auto=format&fit=crop');"></a>
+                            <div class="text">
+                                <h3 class="heading"><a href="{% url 'blogsingle' %}">A Day at the Taj Mahal</a></h3>
+                                <div class="meta">
+                                    <div><a href="#">March 10, 2025</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-box ftco-animate">
+                        <h3>Tags</h3>
+                        <div class="tagcloud">
+                            <a href="#" class="tag-cloud-link">Travel</a>
+                            <a href="#" class="tag-cloud-link">India</a>
+                            <a href="#" class="tag-cloud-link">Adventure</a>
+                            <a href="#" class="tag-cloud-link">Nature</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,120 @@
+$( document ).ready(function() {
+    $('[data-toggle="datepicker"]').datepicker({
+        //ignoreReadonly: true,
+        format: 'dd/mm/yyyy',
+        startDate: new Date(),	
+        zIndex: 100005,
+		autoclose: true,
+    })
+    $("#dateend").datepicker().on('changeDate', function (selected) {
+	   var endDate = new Date(selected.date.valueOf());
+	   $('#datestart').datepicker('setEndDate', endDate);
+	}).on('clearDate', function (selected) {
+	   $('#datestart').datepicker('setEndDate', null);
+	});
+
+    $("#datestart").datepicker().on('changeDate', function (selected) {
+		var startDate = new Date(selected.date.valueOf());
+		$('#dateend').datepicker('setStartDate', startDate);
+	}).on('clearDate', function (selected) {
+		$('#dateend').datepicker('setStartDate', null);
+	});
+    
+    $("#datestart2").datepicker('getDate',{format:'dd/mm/yy'});
+    $("#datestart3").datepicker('getDate',{format:'dd/mm/yy'});
+});
+		
+ $(document).ready(function() { 
+		  
+    $(".choosecar-slider").owlCarousel({ 
+    
+     loop:true,
+      margin:7,
+      nav:true,
+      responsiveClass:true,
+      responsive:{
+          0:{
+              items:1,
+              nav:true
+          },
+          700:{
+              items:2,
+              nav:true
+          },
+          1170:{
+              items:3,
+              nav:true 
+          }
+      }
+    
+    
+    }); 
+  });	
+
+$(document).ready(function() { 
+		  
+    $(".tourist-slider").owlCarousel({ 
+    
+     loop:true,
+      margin:10,
+      nav:true,
+      responsiveClass:true,
+      responsive:{
+          0:{
+              items:1,
+              nav:true
+          },
+          700:{
+              items:2,
+              nav:true
+          },
+          992:{
+            items:3,
+            nav:true
+          },
+          1170:{
+              items:3,
+              nav:true 
+          }
+      }
+    
+    
+    }); 
+  });	
+
+  $(document).ready(function() { 
+    $(".client-slider").owlCarousel({ 
+    
+     loop:true,
+      margin:10,
+      nav:false,
+      responsiveClass:true,
+      responsive:{
+          0:{
+              items:1,
+              nav:true
+          },
+          700:{
+              items:2,
+              nav:false
+          },
+          1170:{
+              items:3,
+              nav:true,
+              loop:false
+          }
+      }
+    
+    
+    }); 
+  });
+  
+  $(document).ready(function() { 
+    if ($(window).width() < 767) { 
+        $('body').click(function(){
+            if ($('.navbar-collapse.collapse').hasClass('show')) {
+                $('.navbar-collapse.collapse').removeClass('show');
+            }
+        }) 
+     }  
+  });

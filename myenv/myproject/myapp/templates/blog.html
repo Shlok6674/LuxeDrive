@@ -1,0 +1,289 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore India: Our Travel Blog</title>
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+
+        .hero-wrap-2 {
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            height: 70vh;
+            display: flex;
+            align-items: flex-end;
+            color: #fff;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .breadcrumbs {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumbs a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .breadcrumbs a:hover {
+            color: #ffcc00;
+        }
+
+        .bread {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .blog-section {
+            padding: 80px 0;
+            background: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .blog-entry {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .blog-entry:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .block-20 {
+            height: 280px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .text {
+            padding: 25px;
+        }
+
+        .meta {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .meta a {
+            color: #555;
+            text-decoration: none;
+        }
+
+        .meta a:hover {
+            color: #007bff;
+        }
+
+        .heading a {
+            font-size: 22px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .heading a:hover {
+            color: #007bff;
+        }
+
+        .text p {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            color: #fff;
+            font-weight: 500;
+            text-transform: uppercase;
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .block-27 ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .block-27 ul li {
+            margin: 0 8px;
+        }
+
+        .block-27 ul li a, .block-27 ul li span {
+            padding: 10px 18px;
+            border-radius: 50%;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .block-27 ul li.active span {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .block-27 ul li a:hover {
+            background: #e9ecef;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{% static 'images/blogbg.webp' %}');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+                <div class="col-md-9 ftco-animate pb-5">
+                    <p class="breadcrumbs">
+                        <span class="mr-2"><a href="{% url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span>
+                        <span>Blog <i class="ion-ios-arrow-forward"></i></span>
+                    </p>
+                    <h1 class="mb-3 bread">Explore India: Our Travel Blog</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-section blog-section">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <!-- Blog Post 1 -->
+                <div class="col-md-6 col-lg-4 text-center d-flex ftco-animate">
+                    <div class="blog-entry">
+                        <a href="{% url 'blogsingle' %}" class="block-20 img" style="background-image: url('{% static 'images/kerala.jpg' %}');"></a>
+                        <div class="text">
+                            <div class="meta mb-3">
+                                <div><a href="#">March 20, 2025</a></div>
+                                <div><a href="#">Kerala Adventure</a></div>
+                                <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 5</a></div>
+                            </div>
+                            <h3 class="heading mt-2"><a href="{% url 'blogsingle' %}">Sailing Through Kerala Backwaters</a></h3>
+                            <p>Experience the serene beauty of Kerala's backwaters with a luxurious houseboat ride through lush greenery and traditional villages.</p>
+                            <p><a href="{% url 'blogsingle' %}" class="btn btn-primary">Read More <span class="icon-long-arrow-right"></span></a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Post 2 -->
+                <div class="col-md-6 col-lg-4 text-center d-flex ftco-animate">
+                    <div class="blog-entry">
+                        <a href="{% url 'blogsingle' %}" class="block-20 img" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop');"></a>
+                        <div class="text">
+                            <div class="meta mb-3">
+                                <div><a href="#">March 15, 2025</a></div>
+                                <div><a href="#">Rajasthan Royals</a></div>
+                                <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 8</a></div>
+                            </div>
+                            <h3 class="heading mt-2"><a href="{% url 'blogsingle' %}">Majestic Forts of Rajasthan</a></h3>
+                            <p>Discover the grandeur of Rajasthan's Amber Fort and Mehrangarh Fort, steeped in history and architectural splendor.</p>
+                            <p><a href="{% url 'blogsingle' %}" class="btn btn-primary">Read More <span class="icon-long-arrow-right"></span></a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Post 3 -->
+                <div class="col-md-6 col-lg-4 text-center d-flex ftco-animate">
+                    <div class="blog-entry">
+                        <a href="{% url 'blogsingle' %}" class="block-20 img" style="background-image: url('https://images.unsplash.com/photo-1564507592333-c60657eea523?q=80&w=2071&auto=format&fit=crop');"></a>
+                        <div class="text">
+                            <div class="meta mb-3">
+                                <div><a href="#">March 10, 2025</a></div>
+                                <div><a href="#">Agra Wonders</a></div>
+                                <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 12</a></div>
+                            </div>
+                            <h3 class="heading mt-2"><a href="{% url 'blogsingle' %}">A Day at the Taj Mahal</a></h3>
+                            <p>Marvel at the timeless beauty of the Taj Mahal, a UNESCO World Heritage Site and symbol of eternal love.</p>
+                            <p><a href="{% url 'blogsingle' %}" class="btn btn-primary">Read More <span class="icon-long-arrow-right"></span></a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="row mt-5">
+                <div class="col text-center">
+                    <div class="block-27">
+                        <ul>
+                            <li><a href="#" class="page-link"><</a></li>
+                            <li class="active"><span>1</span></li>
+                            <li><a href="#" class="page-link">2</a></li>
+                            <li><a href="#" class="page-link">3</a></li>
+                            <li><a href="#" class="page-link">></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const blogEntries = document.querySelectorAll('.blog-entry');
+            blogEntries.forEach((entry, index) => {
+                setTimeout(() => {
+                    entry.classList.add('fade-in');
+                }, index * 200);
+            });
+
+            const pageLinks = document.querySelectorAll('.page-link');
+            pageLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('Pagination clicked! Add more posts and logic here.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

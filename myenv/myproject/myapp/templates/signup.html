@@ -1,0 +1,336 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Hero Section with Car-Themed Background -->
+<section class="hero-section text-white py-5" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%), url('{% static 'images/car-hero-bg.jpg' %}'); background-blend-mode: overlay; background-size: cover; background-position: center;">
+  <div class="container py-5">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-lg-8 text-center">
+        <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInDown">Start Your Journey with JoyRide</h1>
+        <p class="lead mb-4 animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">Rent a car or list your vehicle in minutes!</p>
+        <a href="#signup-form" class="btn btn-outline-light btn-lg animate__animated animate__pulse animate__infinite">Get Started</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Alert Message Display -->
+{% if msg %}
+<div class="container mt-4">
+  <div class="alert alert-danger alert-dismissible fade show animate__animated animate__shakeX" role="alert">
+    <i class="fas fa-exclamation-circle me-2"></i> {{ msg }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+</div>
+{% endif %}
+
+<!-- Signup Form Section -->
+<section class="py-5 bg-light" id="signup-form">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden animate__animated animate__zoomIn">
+          <div class="row g-0">
+            <!-- Left Side - Car Rental Benefits -->
+            <div class="col-lg-4 bg-primary text-white">
+              <div class="p-5 h-100 d-flex flex-column justify-content-between">
+                <div>
+                  <h3 class="fw-bold mb-4"><i class="fas fa-car me-2"></i> Drive with JoyRide</h3>
+                  <ul class="list-unstyled">
+                    <li class="mb-3 d-flex align-items-center"><i class="fas fa-road me-2"></i> Explore a variety of cars</li>
+                    <li class="mb-3 d-flex align-items-center"><i class="fas fa-clock me-2"></i> Flexible rental durations</li>
+                    <li class="mb-3 d-flex align-items-center"><i class="fas fa-money-bill-wave me-2"></i> Earn by sharing your car</li>
+                    <li class="d-flex align-items-center"><i class="fas fa-headset me-2"></i> 24/7 roadside assistance</li>
+                  </ul>
+                </div>
+                <div>
+                  <h6 class="text-uppercase text-white-50 mb-3">Follow Us</h6>
+                  <div class="d-flex gap-3">
+                    <a href="#" class="text-white" aria-label="Facebook"><i class="fab fa-facebook-f fa-lg"></i></a>
+                    <a href="#" class="text-white" aria-label="Twitter"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="text-white" aria-label="Instagram"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="#" class="text-white" aria-label="LinkedIn"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side - Signup Form -->
+            <div class="col-lg-8 bg-white">
+              <div class="p-5">
+                <div class="mb-5 text-center">
+                  <h3 class="fw-bold text-primary"><i class="fas fa-user-plus me-2"></i> Create Your JoyRide Account</h3>
+                  <p class="text-muted">Join now to rent or list cars effortlessly</p>
+                </div>
+                <form method="post" action="{% url 'signup' %}" class="needs-validation" enctype="multipart/form-data" novalidate>
+                  {% csrf_token %}
+                  <div class="row g-4">
+                    <div class="col-md-6">
+                      <label for="name" class="form-label fw-bold">Full Name</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-user text-primary"></i></span>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="John Doe" required aria-describedby="nameHelp">
+                      </div>
+                      <div id="nameHelp" class="form-text text-muted">Enter your full name</div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="usertype" class="form-label fw-bold">Account Type</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-car text-primary"></i></span>
+                        <select name="usertype" id="usertype" class="form-select" required aria-describedby="usertypeHelp">
+                          <option value="" disabled selected>Rent or List?</option>
+                          <option value="customer">Customer (Rent Cars)</option>
+                          <option value="lessor">Lessor (List Cars)</option>
+                        </select>
+                      </div>
+                      <div id="usertypeHelp" class="form-text text-muted">Choose your role</div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="email" class="form-label fw-bold">Email Address</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-envelope text-primary"></i></span>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required aria-describedby="emailHelp">
+                      </div>
+                      <div id="emailHelp" class="form-text text-muted">We'll send a confirmation here</div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="mobile" class="form-label fw-bold">Mobile Number</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-mobile-alt text-primary"></i></span>
+                        <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="+91 98765 43210" pattern="[0-9]{10}" required aria-describedby="mobileHelp">
+                      </div>
+                      <div id="mobileHelp" class="form-text text-muted">10-digit number required</div>
+                    </div>
+                    <div class="col-md-6 position-relative">
+                      <label for="password" class="form-label fw-bold">Password</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-lock text-primary"></i></span>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="********" minlength="8" required aria-describedby="passwordHelp">
+                        <button type="button" class="btn btn-outline-secondary toggle-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10;"><i class="fas fa-eye"></i></button>
+                      </div>
+                      <div id="passwordHelp" class="form-text text-muted">Minimum 8 characters</div>
+                    </div>
+                    <div class="col-md-6 position-relative">
+                      <label for="cpassword" class="form-label fw-bold">Confirm Password</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-lock text-primary"></i></span>
+                        <input type="password" class="form-control" id="cpassword" name="cpassword" placeholder="********" minlength="8" required aria-describedby="cpasswordHelp">
+                        <button type="button" class="btn btn-outline-secondary toggle-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10;"><i class="fas fa-eye"></i></button>
+                      </div>
+                      <div id="cpasswordHelp" class="form-text text-muted">Must match password</div>
+                    </div>
+                    <div class="col-12">
+                      <label for="profile" class="form-label fw-bold">Profile Picture</label>
+                      <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="fas fa-camera text-primary"></i></span>
+                        <input type="file" class="form-control" id="profile" name="profile" accept="image/*" aria-describedby="profileHelp">
+                      </div>
+                      <div id="profileHelp" class="form-text text-muted">Optional - Add your photo</div>
+                    </div>
+                    <div class="col-12">
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" required>
+                        <label class="form-check-label" for="terms">I agree to JoyRide's <a href="#" class="text-primary">Terms & Conditions</a></label>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-primary btn-lg w-100 py-3 animate__animated animate__pulse animate__infinite">Join JoyRide</button>
+                    </div>
+                    <div class="col-12 text-center">
+                      <p class="mb-0">Already a member? <a href="{% url 'login' %}" class="fw-bold text-primary">Log In</a></p>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Embedded CSS -->
+<style>
+  :root {
+    --primary-color: #2a5298;
+    --secondary-color: #1e3c72;
+    --text-color: #333;
+    --light-bg: #f5f5f5;
+    --shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  body {
+    background: var(--light-bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+  }
+
+  .hero-section {
+    position: relative;
+    min-height: 350px;
+    background-attachment: fixed;
+  }
+
+  .hero-section .btn-outline-light {
+    border-width: 2px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+  }
+
+  .hero-section .btn-outline-light:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+
+  .card {
+    border-radius: 25px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow);
+  }
+
+  .bg-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  }
+
+  .form-label {
+    color: var(--text-color);
+    font-size: 1.1rem;
+  }
+
+  .input-group-text {
+    border-right: none;
+    background: #fff;
+    color: var(--primary-color);
+  }
+
+  .form-control, .form-select {
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+    padding: 0.85rem 1.25rem;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+    font-size: 1rem;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(42, 82, 152, 0.25);
+  }
+
+  .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+
+  .btn-primary {
+    background: var(--primary-color);
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background: var(--secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(42, 82, 152, 0.4);
+  }
+
+  .toggle-password {
+    border: none;
+    background: transparent;
+    padding: 0.5rem;
+  }
+
+  .toggle-password:hover {
+    color: var(--primary-color);
+  }
+
+  @media (max-width: 991px) {
+    .col-lg-4 {
+      display: none;
+    }
+    .col-lg-8 {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .hero-section {
+      min-height: 250px;
+    }
+    .hero-section h1 {
+      font-size: 2.2rem;
+    }
+    .hero-section p {
+      font-size: 1rem;
+    }
+    .card {
+      padding: 1rem;
+    }
+    .form-control, .form-select {
+      font-size: 0.95rem;
+    }
+  }
+</style>
+
+<!-- Embedded JavaScript -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Form validation
+    const form = document.querySelector('.needs-validation');
+    form.addEventListener('submit', function(event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+
+      // Password match check
+      const password = document.getElementById('password');
+      const cpassword = document.getElementById('cpassword');
+      if (password.value !== cpassword.value) {
+        event.preventDefault();
+        cpassword.setCustomValidity('Passwords do not match');
+        cpassword.classList.add('is-invalid');
+      } else {
+        cpassword.setCustomValidity('');
+        cpassword.classList.remove('is-invalid');
+      }
+    }, false);
+
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(button => {
+      button.addEventListener('click', function() {
+        const input = this.previousElementSibling;
+        const icon = this.querySelector('i');
+        if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          input.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      });
+    });
+
+    // Smooth scroll to form
+    document.querySelector('.btn-outline-light').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.querySelector('#signup-form').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+
+<!-- Dependencies -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+{% endblock %}

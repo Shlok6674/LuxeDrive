@@ -1,0 +1,218 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services</title>
+    <style>
+        /* Service Cards Styling */
+        .service-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background-color: #01d28e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover .service-icon {
+            background-color: #1089ff;
+            transform: rotate(360deg);
+        }
+        
+        .service-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .service-text {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        /* Hero Section Enhancement */
+        .hero-wrap-2 {
+            position: relative;
+            background-size: cover;
+            background-position: center center;
+            height: 400px !important;
+        }
+        
+        .hero-wrap-2 .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+        }
+        
+        .slider-text {
+            height: 400px !important;
+            color: #fff;
+        }
+        
+        .breadcrumbs {
+            font-size: 16px;
+            font-weight: 400;
+        }
+        
+        .breadcrumbs a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+        
+        .breadcrumbs a:hover {
+            color: #1089ff;
+        }
+        
+        .bread {
+            font-size: 46px;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        /* Section Heading Styling */
+        .heading-section .subheading {
+            font-size: 14px;
+            display: block;
+            margin-bottom: 5px;
+            color: #1089ff;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        
+        .heading-section h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url({% static 'images/bg_3.jpg' %});" data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+                <div class="col-md-9 ftco-animate pb-5">
+                    <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Services <i class="ion-ios-arrow-forward"></i></span></p>
+                    <h1 class="mb-3 bread">Our Services</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-md-7 text-center heading-section ftco-animate">
+                    <span class="subheading">Services</span>
+                    <h2 class="mb-3">Our Premium Services</h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="flaticon-route"></i>
+                        </div>
+                        <h3 class="service-title text-center">Wedding Ceremony</h3>
+                        <p class="service-text text-center">We provide full transportation services for your special day, ensuring timely and luxurious arrival for you and your guests.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="flaticon-route"></i>
+                        </div>
+                        <h3 class="service-title text-center">City Transfer</h3>
+                        <p class="service-text text-center">Comfortable and reliable transportation within the city. Our professional drivers ensure you reach your destination on time.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="flaticon-route"></i>
+                        </div>
+                        <h3 class="service-title text-center">Airport Transfer</h3>
+                        <p class="service-text text-center">Start or end your journey stress-free with our punctual airport transfer service available 24/7, with flight tracking.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="flaticon-route"></i>
+                        </div>
+                        <h3 class="service-title text-center">Whole City Tour</h3>
+                        <p class="service-text text-center">Explore the city with our guided tour packages. Visit all major attractions with a knowledgeable local guide.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Add animation class to elements when they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            const animateElements = document.querySelectorAll('.ftco-animate');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fadeInUp');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+            
+            // Set proper height for hero section
+            const heroSection = document.querySelector('.js-fullheight');
+            heroSection.style.height = window.innerHeight + 'px';
+            
+            window.addEventListener('resize', function() {
+                heroSection.style.height = window.innerHeight + 'px';
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

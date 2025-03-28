@@ -1,0 +1,463 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Booking Summary Card -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+<div class="booking-container">
+    <div class="card booking-card shadow-lg animate__animated animate__fadeIn">
+        <div class="card-header">
+            <h2 class="title"><i class="fas fa-file-invoice-dollar me-2"></i> Booking Summary</h2>
+            <div class="car-info">
+                <div class="car-video-container">
+                    <video autoplay loop muted playsinline class="car-video" 
+                           poster="{{ car.cimage.url }}" 
+                           onerror="this.src='{% static 'videos/default-car-video.mp4' %}'">
+                        <source src="{% static 'videos/car-animation.mp4' %}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="car-details">
+                    <h3>{{ car.cname }}</h3>
+                    <span class="car-type badge bg-secondary">{{ car.ctype|default:"Sedan" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="summary-container">
+            <div class="summary-row animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                <div class="summary-label">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h5>Pick-up Location</h5>
+                </div>
+                <p>{{ booking.pickup_address|default:"Not specified" }}</p>
+            </div>
+            <div class="summary-row animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                <div class="summary-label">
+                    <i class="fas fa-map-marker"></i>
+                    <h5>Drop-off Location</h5>
+                </div>
+                <p>{{ booking.drop_address|default:"Same as pick-up" }}</p>
+            </div>
+            <div class="summary-row animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                <div class="summary-label">
+                    <i class="fas fa-clock"></i>
+                    <h5>Pick-up Time</h5>
+                </div>
+                <p>{{ booking.pick_time|date:"d M Y, H:i" }}</p>
+            </div>
+            <div class="summary-row animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+                <div class="summary-label">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h5>Total Days</h5>
+                </div>
+                <p>{{ booking.total_days|default:"1" }} day{{ booking.total_days|pluralize }}</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="price-breakdown animate__animated animate__fadeInUp" style="animation-delay: 0.5s;">
+            <h5 class="mb-3"><i class="fas fa-rupee-sign me-2"></i> Price Details</h5>
+            <div class="price-row">
+                <span>Base Rental Charge</span>
+                <span>₹{{ car.cprice|floatformat:2 }} /day</span>
+            </div>
+            <div class="price-row">
+                <span>Rental Period</span>
+                <span>{{ booking.total_days|default:"1" }} day{{ booking.total_days|pluralize }}</span>
+            </div>
+            {% if booking.insurance_charge %}
+            <div class="price-row">
+                <span>Insurance</span>
+                <span>₹{{ booking.insurance_charge|floatformat:2 }}</span>
+            </div>
+            {% endif %}
+            <div class="price-row total">
+                <span>Total Amount</span>
+                <span>₹{{ booking.total_amount|floatformat:2 }}</span>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button type="button" class="proceed-button animate__animated animate__pulse animate__infinite" id="rzp-button1">
+                <span class="button-text">Proceed to Payment</span>
+                <i class="fas fa-arrow-right button-icon"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Payment Status -->
+    <div id="payment-status" class="payment-status"></div>
+</div>
+
+<!-- Razorpay Checkout Script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const paymentButton = document.getElementById("rzp-button1");
+        const paymentStatus = document.getElementById("payment-status");
+
+        const options = {
+            "key": "{{ razorpay_key }}",
+            "amount": "{{ payment.amount }}",
+            "currency": "INR",
+            "name": "JoyRide",
+            "description": "Car Rental Payment",
+            "image": "{% static 'images/logo.png' %}",
+            "order_id": "{{ payment.id }}",
+            "handler": function(response) {
+                paymentStatus.style.display = 'block';
+                paymentStatus.innerHTML = `<i class="fas fa-check-circle me-2"></i> Payment Successful!<br>Payment ID: ${response.razorpay_payment_id}`;
+                paymentStatus.classList.add('success', 'animate__animated', 'animate__bounceIn');
+                setTimeout(() => {
+                    window.location.href = `/success?razorpay_payment_id=${response.razorpay_payment_id}`;
+                }, 2000);
+            },
+            "prefill": {
+                "name": "{{ user.name|default:'' }}",
+                "email": "{{ user.email|default:'' }}",
+                "contact": "{{ user.mobile|default:'' }}"
+            },
+            "theme": {
+                "color": "#00b33c"
+            },
+            "modal": {
+                "ondismiss": function() {
+                    paymentButton.disabled = false;
+                    paymentButton.classList.remove('processing');
+                    paymentButton.querySelector('.button-text').textContent = 'Proceed to Payment';
+                }
+            }
+        };
+
+        const rzp1 = new Razorpay(options);
+
+        paymentButton.addEventListener("click", function(e) {
+            e.preventDefault();
+            paymentButton.disabled = true;
+            paymentButton.classList.add('processing');
+            paymentButton.classList.remove('animate__pulse', 'animate__infinite');
+            paymentButton.querySelector('.button-text').textContent = 'Processing...';
+            rzp1.open();
+        });
+
+        rzp1.on('payment.failed', function(response) {
+            paymentStatus.style.display = 'block';
+            paymentStatus.innerHTML = `<i class="fas fa-exclamation-circle me-2"></i> Payment Failed!<br>Error: ${response.error.description}`;
+            paymentStatus.classList.add('error', 'animate__animated', 'animate__shakeX');
+            paymentButton.disabled = false;
+            paymentButton.classList.remove('processing');
+            paymentButton.classList.add('animate__pulse', 'animate__infinite');
+            paymentButton.querySelector('.button-text').textContent = 'Proceed to Payment';
+        });
+    });
+</script>
+
+<!-- Embedded CSS -->
+<style>
+    :root {
+        --primary-color: #00b33c;
+        --secondary-color: #009933;
+        --text-color: #333;
+        --shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+        --light-bg: #f5f5f5;
+    }
+
+    body {
+        background: var(--light-bg);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        padding: 40px 20px;
+    }
+
+    .booking-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .booking-card {
+        background: white;
+        border-radius: 25px;
+        padding: 35px;
+        box-shadow: var(--shadow);
+        transition: transform 0.3s ease;
+    }
+
+    .booking-card:hover {
+        transform: translateY(-8px);
+    }
+
+    .card-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .title {
+        font-size: 2rem;
+        color: var(--text-color);
+        font-weight: 700;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .car-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+
+    .car-video-container {
+        position: relative;
+        width: 100%;
+        max-width: 250px;
+        height: 160px;
+        overflow: hidden;
+        border-radius: 15px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .car-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+        transition: transform 0.3s ease;
+    }
+
+    .car-video:hover {
+        transform: scale(1.05);
+    }
+
+    .car-details h3 {
+        font-size: 1.6rem;
+        color: var(--text-color);
+        margin-bottom: 8px;
+    }
+
+    .car-type {
+        font-size: 0.95rem;
+        padding: 6px 12px;
+    }
+
+    .divider {
+        height: 1px;
+        background: rgba(0, 0, 0, 0.15);
+        margin: 35px 0;
+    }
+
+    .summary-container {
+        display: grid;
+        gap: 30px;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+        transition: background 0.2s ease;
+    }
+
+    .summary-row:hover {
+        background: #f9f9f9;
+    }
+
+    .summary-label {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        min-width: 200px;
+    }
+
+    .summary-label i {
+        color: var(--primary-color);
+        font-size: 1.4rem;
+    }
+
+    .summary-label h5 {
+        font-size: 1.15rem;
+        margin: 0;
+        color: var(--text-color);
+    }
+
+    .summary-row p {
+        margin: 0;
+        font-size: 1.05rem;
+        color: #555;
+        text-align: right;
+        flex: 1;
+    }
+
+    .price-breakdown {
+        background: #fafafa;
+        border-radius: 15px;
+        padding: 30px;
+        margin: 25px 0;
+    }
+
+    .price-breakdown h5 {
+        font-size: 1.3rem;
+        color: var(--text-color);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+    }
+
+    .price-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        font-size: 1.05rem;
+        color: #666;
+    }
+
+    .price-row.total {
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--text-color);
+        margin-top: 25px;
+        border-top: 1px dashed #ddd;
+        padding-top: 20px;
+    }
+
+    .button-container {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .proceed-button processing {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 15px 35px;
+        border-radius: 12px;
+        font-size: 1.15rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .proceed-button {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 15px 35px;
+        border-radius: 12px;
+        font-size: 1.15rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        transition: all 0.3s ease;
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+    }
+
+    .proceed-button:hover:not(.processing) {
+        background: var(--secondary-color);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 179, 60, 0.3);
+    }
+
+    .proceed-button.processing {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .button-icon {
+        font-size: 1.1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .proceed-button:hover:not(.processing) .button-icon {
+        transform: translateX(8px);
+    }
+
+    .payment-status {
+        margin-top: 30px;
+        padding: 25px;
+        border-radius: 12px;
+        font-size: 1.05rem;
+        display: none;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .payment-status.success {
+        background: #e6ffe6;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+    }
+
+    .payment-status.error {
+        background: #ffe6e6;
+        color: #dc3545;
+        border: 1px solid #dc3545;
+    }
+
+    @media (max-width: 768px) {
+        .booking-card {
+            padding: 25px;
+        }
+
+        .summary-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .summary-label {
+            min-width: 100%;
+        }
+
+        .summary-row p {
+            text-align: left;
+        }
+
+        .car-info {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .booking-container {
+            padding: 15px;
+        }
+
+        .title {
+            font-size: 1.6rem;
+        }
+
+        .car-video-container {
+            max-width: 200px;
+            height: 130px;
+        }
+
+        .car-details h3 {
+            font-size: 1.4rem;
+        }
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{% static 'images/bg_3.jpg' %}');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+            <div class="col-md-9 ftco-animate pb-5">
+                <p class="breadcrumbs"><span class="mr-2"><a href="{%url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Update Car <i class="ion-ios-arrow-forward"></i></span></p>
+                <h1 class="mb-3 bread">Update Car Details</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 ftco-animate">
+                <div class="card shadow">
+                    <div class="card-header bg-primary">
+                        <h3 class="text-white mb-0">Update Car Information</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <form method="POST" action="{% url 'update' car.id %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="cname" class="font-weight-bold">Car Name</label>
+                                    <input type="text" id="cname" name="cname" class="form-control" value="{{ car.cname }}" required>
+                                </div>
+                                
+                                <div class="col-md-6 form-group">
+                                    <label for="cprice" class="font-weight-bold">Car Price (per day)</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input type="number" id="cprice" name="cprice" class="form-control" value="{{ car.cprice }}" min="0" step="0.01" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="mileage" class="font-weight-bold">Mileage</label>
+                                    <div class="input-group">
+                                        <input type="text" id="mileage" name="mileage" class="form-control" value="{{ car.mileage }}" required>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">km/l</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 form-group">
+                                    <label for="stransmission" class="font-weight-bold">Transmission</label>
+                                    <select id="stransmission" name="stransmission" class="form-control">
+                                        <option value="Automatic" {% if car.stransmission == 'Automatic' %}selected{% endif %}>Automatic</option>
+                                        <option value="Manual" {% if car.stransmission == 'Manual' %}selected{% endif %}>Manual</option>
+                                        <option value="CVT" {% if car.stransmission == 'CVT' %}selected{% endif %}>CVT</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label for="seats" class="font-weight-bold">Seats</label>
+                                    <input type="number" id="seats" name="seats" class="form-control" value="{{ car.seats }}" min="1" max="10" required>
+                                </div>
+                                
+                                <div class="col-md-4 form-group">
+                                    <label for="luggage" class="font-weight-bold">Luggage Capacity</label>
+                                    <input type="number" id="luggage" name="luggage" class="form-control" value="{{ car.luggage }}" min="0" required>
+                                </div>
+                                
+                                <div class="col-md-4 form-group">
+                                    <label for="sfuel" class="font-weight-bold">Fuel Type</label>
+                                    <select id="sfuel" name="sfuel" class="form-control">
+                                        <option value="Petrol" {% if car.sfuel == 'Petrol' %}selected{% endif %}>Petrol</option>
+                                        <option value="Diesel" {% if car.sfuel == 'Diesel' %}selected{% endif %}>Diesel</option>
+                                        <option value="Electric" {% if car.sfuel == 'Electric' %}selected{% endif %}>Electric</option>
+                                        <option value="Hybrid" {% if car.sfuel == 'Hybrid' %}selected{% endif %}>Hybrid</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="desc" class="font-weight-bold">Description</label>
+                                <textarea id="desc" name="desc" class="form-control" rows="4">{{ car.desc }}</textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cimage" class="font-weight-bold">Car Image</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="cimage" name="cimage">
+                                    <label class="custom-file-label" for="cimage">{{ car.cimage.name|default:"Choose file" }}</label>
+                                </div>
+                                {% if car.cimage %}
+                                <div class="mt-2">
+                                    <img src="{{ car.cimage.url }}" alt="{{ car.cname }}" class="img-thumbnail" style="max-height: 100px;">
+                                    <p class="text-muted small">Current image. Upload a new one to replace.</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group mt-4 text-center">
+                                <button type="submit" class="btn btn-primary btn-lg px-5">Update Car</button>
+                                <a href="{% url 'details' pk=car.pk %}" class="btn btn-secondary btn-lg px-5 ml-2">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Show filename when file is selected
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+            var fileName = e.target.files[0].name;
+            var nextSibling = e.target.nextElementSibling;
+            nextSibling.innerText = fileName;
+        });
+    });
+</script>
+{% endblock %}

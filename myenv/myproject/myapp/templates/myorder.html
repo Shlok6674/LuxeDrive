@@ -1,0 +1,565 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-wrap hero-wrap-2 js-fullheight" 
+         style="background-image: url('{% static 'images/bg_1.jpg' %}'); background-size: cover;" 
+         data-stellar-background-ratio="0.5">
+    <div class="overlay" style="background: rgba(0, 0, 0, 0.3);"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+            <div class="col-md-9 ftco-animate pb-5">
+                <p class="breadcrumbs text-light">
+                    <span class="mr-2"><a href="{% url 'index' %}" class="text-white">Home <i class="ion-ios-arrow-forward"></i></a></span>
+                    <span class="text-white">My Orders</span>
+                </p>
+                <h1 class="mb-3 bread text-white">My Orders</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="ftco-section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Messages -->
+                {% if messages %}
+                    <div class="alert-container">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Filter and Search Controls -->
+                <div class="filter-container mb-4 ftco-animate">
+                    <div class="filter-controls d-flex justify-content-between align-items-center flex-wrap">
+                        <div class="d-flex align-items-center mb-2 mb-md-0">
+                            <span class="mr-3">Filter by:</span>
+                            <div class="btn-group status-filter mr-3">
+                                <button class="btn btn-sm btn-outline-primary active" data-filter="all">All</button>
+                                <button class="btn btn-sm btn-outline-success" data-filter="confirmed">Confirmed</button>
+                                <button class="btn btn-sm btn-outline-warning" data-filter="pending">Pending</button>
+                            </div>
+                        </div>
+                        <div class="search-box">
+                            <div class="input-group">
+                                <input type="text" id="searchOrders" class="form-control" placeholder="Search orders...">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button"><i class="ion-ios-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if bookings %}
+                    <div class="booking-count mb-3">
+                        <span id="booking-counter">Showing all {{ bookings|length }} booking(s)</span>
+                    </div>
+
+                    <div id="bookings-container">
+                        {% for booking in bookings %}
+                        <div class="order-details mb-4 ftco-animate booking-card" 
+                             data-status="{% if booking.status %}confirmed{% else %}pending{% endif %}"
+                             data-id="{{ booking.id }}"
+                             data-carname="{{ booking.car.cname|lower }}">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5>Booking #{{ booking.id }}</h5>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-link" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="ion-ios-more"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu{{ booking.id }}">
+                                        <button class="dropdown-item view-details-btn" data-id="{{ booking.id }}">View Details</button>
+                                        <button class="dropdown-item contact-support-btn">Contact Support</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="booking-details mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span><strong>Status:</strong> 
+                                        {% if booking.status %}
+                                            <span class="badge badge-success">Confirmed</span>
+                                        {% else %}
+                                            <span class="badge badge-warning">Pending</span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="car-details">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="car-image mb-4 hover-zoom">
+                                            <img src="{{ booking.car.cimage.url }}" alt="{{ booking.car.cname }}" class="img-fluid rounded">
+                                            <div class="car-name-overlay">{{ booking.car.cname }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="car-name mb-2">{{ booking.car.cname }}</div>
+                                        <div class="car-specs mb-4">
+                                            {% if booking.car.stransmission %}
+                                            <div class="spec">
+                                                <span class="spec-icon">🔄</span>
+                                                <span>{{ booking.car.stransmission }}</span>
+                                            </div>
+                                            {% endif %}
+                                            {% if booking.car.sfuel %}
+                                            <div class="spec">
+                                                <span class="spec-icon">⛽</span>
+                                                <span>{{ booking.car.sfuel }}</span>
+                                            </div>
+                                            {% endif %}
+                                            {% if booking.car.seats %}
+                                            <div class="spec">
+                                                <span class="spec-icon">🪑</span>
+                                                <span>{{ booking.car.seats }} seats</span>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="time-details">
+                                            <div class="time-row">
+                                                <div class="time-flag">
+                                                    <span class="green-flag">Pickup</span>
+                                                    <span>{{ booking.start_date }} {{ booking.pick_time }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="time-row">
+                                                <div class="time-flag">
+                                                    <span class="red-flag">Dropoff</span>
+                                                    <span>{{ booking.end_date }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="time-row">
+                                                <div><strong>Pickup Location:</strong> {{ booking.pickup_address }}</div>
+                                            </div>
+                                            <div class="time-row">
+                                                <div><strong>Dropoff Location:</strong> {{ booking.drop_address }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="deposit-info mt-4">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="deposit-row">
+                                                <div>Total Days</div>
+                                                <div>{{ booking.total_days }} days</div>
+                                            </div>
+                                            <div class="deposit-row">
+                                                <div>Price Per Day</div>
+                                                <div>₹ {{ booking.car.cprice }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="deposit-row total-amount">
+                                                <div><strong>Total Amount</strong></div>
+                                                <div><strong class="price">₹ {{ booking.total_amount }}</strong></div>
+                                            </div>
+                                            <div class="text-right mt-2 d-flex justify-content-end align-items-center">
+                                                {% if not booking.status %}
+                                                    <a href="{% url 'cancelorder' booking.id %}" class="btn btn-outline-danger mr-3" onclick="return confirm('Are you sure you want to cancel this order?')">Cancel Order</a>
+                                                    <a href="/pay/{{ booking.id }}" class="btn btn-outline-primary mr-3">Complete Payment</a>
+                                                {% else %}
+                                                    <span class="text-success"><i class="ion-ios-checkmark-circle"></i> Payment Complete</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-5 empty-state">
+                        <div class="mb-4 empty-icon">
+                            <i class="icon-car" style="font-size: 4rem; color: #ccc;"></i>
+                        </div>
+                        <h3>You haven't made any bookings yet</h3>
+                        <p class="mb-4">Browse our collection of cars and book your first ride!</p>
+                        <a href="{% url 'car' %}" class="btn btn-primary py-2 px-4 rounded-pill">Explore Cars</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal for Booking Details -->
+<div class="modal fade" id="bookingDetailsModal" tabindex="-1" role="dialog" aria-labelledby="bookingDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookingDetailsModalLabel">Booking Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="bookingDetailsContent">
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Support Contact Modal -->
+<div class="modal fade" id="contactSupportModal" tabindex="-1" role="dialog" aria-labelledby="contactSupportModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactSupportModalLabel">Contact Support</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="supportForm">
+                    <div class="form-group">
+                        <label for="supportSubject">Subject</label>
+                        <input type="text" class="form-control" id="supportSubject" placeholder="Enter subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="supportMessage">Message</label>
+                        <textarea class="form-control" id="supportMessage" rows="4" placeholder="Describe your issue..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="sendSupportMessage">Send Message</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Enhanced Styling */
+    .order-details {
+        background-color: #fff;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+    .order-details:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    .card-header {
+        padding: 0 0 15px 0;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 15px;
+    }
+    .booking-details {
+        background-color: #f8f9fa;
+        border-radius: 20px;
+        padding: 12px 20px;
+    }
+    .car-name {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #01d28e;
+    }
+    .car-specs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    .spec {
+        display: flex;
+        align-items: center;
+        background-color: #f8f9fa;
+        padding: 8px 15px;
+        border-radius: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        transition: all 0.2s ease;
+    }
+    .spec:hover {
+        background-color: #e9ecef;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    }
+    .spec-icon {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+    .time-details {
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        padding: 15px 20px;
+        margin-top: 15px;
+    }
+    .time-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        padding: 8px 0;
+        border-bottom: 1px dashed #e6e6e6;
+    }
+    .time-row:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+    .price {
+        color: #01d28e;
+        font-weight: bold;
+        font-size: 20px;
+    }
+    .deposit-info {
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    .deposit-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .deposit-row:last-child {
+        border-bottom: none;
+    }
+    .total-amount {
+        background-color: #e9fff5;
+        border-radius: 8px;
+        padding: 10px 15px;
+    }
+    .green-flag {
+        color: #01d28e;
+        margin-right: 10px;
+    }
+    .red-flag {
+        color: #dc3545;
+        margin-right: 10px;
+    }
+    .badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: normal;
+    }
+    .badge-success {
+        background-color: #01d28e;
+        color: white;
+    }
+    .badge-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+    .filter-container {
+        background-color: #fff;
+        border-radius: 12px;
+        padding: 15px 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .hover-zoom {
+        overflow: hidden;
+        position: relative;
+    }
+    .hover-zoom img {
+        transition: transform 0.4s ease;
+    }
+    .hover-zoom:hover img {
+        transform: scale(1.05);
+    }
+    .car-name-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+        color: white;
+        padding: 15px;
+        font-weight: bold;
+        font-size: 18px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .hover-zoom:hover .car-name-overlay {
+        opacity: 1;
+    }
+    .empty-state {
+        animation: fadeIn 0.8s ease;
+    }
+    .empty-icon {
+        animation: bounce 2s infinite;
+    }
+    .booking-count {
+        font-style: italic;
+        color: #6c757d;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-20px); }
+        60% { transform: translateY(-10px); }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Filter and Search Functionality
+    const statusButtons = document.querySelectorAll('.status-filter button');
+    const searchInput = document.getElementById('searchOrders');
+    const bookingCards = document.querySelectorAll('.booking-card');
+    const bookingCounter = document.getElementById('booking-counter');
+
+    statusButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            statusButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            filterBookings();
+        });
+    });
+
+    searchInput.addEventListener('input', filterBookings);
+
+    function filterBookings() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const statusFilter = document.querySelector('.status-filter button.active').getAttribute('data-filter');
+        let visibleCount = 0;
+
+        bookingCards.forEach(card => {
+            const cardStatus = card.getAttribute('data-status');
+            const cardId = card.getAttribute('data-id');
+            const carName = card.getAttribute('data-carname');
+
+            const matchesStatus = statusFilter === 'all' || cardStatus === statusFilter;
+            const matchesSearch = carName.includes(searchTerm) || cardId.includes(searchTerm);
+
+            if (matchesStatus && matchesSearch) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        bookingCounter.textContent = `Showing ${visibleCount} of ${bookingCards.length} booking(s)`;
+    }
+
+    // View Details Functionality
+    const viewDetailsButtons = document.querySelectorAll('.view-details-btn');
+    viewDetailsButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const bookingId = this.getAttribute('data-id');
+            showBookingDetails(bookingId);
+        });
+    });
+
+    function showBookingDetails(bookingId) {
+        $('#bookingDetailsModal').modal('show');
+        const bookingCard = document.querySelector(`.booking-card[data-id="${bookingId}"]`);
+        if (bookingCard) {
+            const contentClone = bookingCard.cloneNode(true);
+            contentClone.querySelector('.dropdown')?.remove();
+            document.getElementById('bookingDetailsContent').innerHTML = '';
+            document.getElementById('bookingDetailsContent').appendChild(contentClone);
+            document.getElementById('bookingDetailsModalLabel').textContent = `Booking #${bookingId} Details`;
+        }
+    }
+
+    // Contact Support Functionality
+    const contactSupportButtons = document.querySelectorAll('.contact-support-btn');
+    contactSupportButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            $('#contactSupportModal').modal('show');
+        });
+    });
+
+    document.getElementById('sendSupportMessage').addEventListener('click', function() {
+        const subject = document.getElementById('supportSubject').value;
+        const message = document.getElementById('supportMessage').value;
+
+        if (!subject || !message) {
+            alert('Please fill out all fields');
+            return;
+        }
+
+        this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
+        this.disabled = true;
+
+        setTimeout(() => {
+            document.getElementById('supportForm').reset();
+            $('#contactSupportModal').modal('hide');
+            showNotification('Message sent successfully! Our team will contact you shortly.', 'success');
+            this.innerHTML = 'Send Message';
+            this.disabled = false;
+        }, 1500);
+    });
+
+    // Notification System
+    function showNotification(message, type = 'info') {
+        if (!document.getElementById('notification-container')) {
+            const container = document.createElement('div');
+            container.id = 'notification-container';
+            container.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                max-width: 350px;
+            `;
+            document.body.appendChild(container);
+        }
+
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type} alert-dismissible fade show`;
+        notification.innerHTML = `
+            ${message}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        `;
+
+        notification.style.cssText = `
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        `;
+
+        document.getElementById('notification-container').appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 10);
+
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => notification.remove(), 300);
+        }, 5000);
+    }
+});
+</script>
+
+{% endblock %}
