@@ -24,7 +24,9 @@ from django.core.exceptions import ValidationError
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    # Fetch featured cars from the database
+    featured_cars = Car.objects.filter(is_featured=True)  # Use the is_featured field
+    return render(request, 'index.html', {'car': featured_cars})
 
 def signup(request):
     if request.method == "POST":
@@ -477,4 +479,4 @@ def pay(request, booking_id):
         print(f"Error in pay view: {e}")
         messages.error(request, "Something went wrong. Please try again.")
         return redirect('myorder')
-    
+

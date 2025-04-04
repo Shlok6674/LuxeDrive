@@ -51,7 +51,8 @@ class Car(models.Model):
     remotecontrollocking=models.BooleanField(default=True)
     climatecontrol=models.BooleanField(default=True) 
     cprice = models.IntegerField(null=True, blank=True)
-    cimage = models.ImageField(default="")      
+    cimage = models.ImageField(default="")
+    is_featured = models.BooleanField(default=True)  # Add this field to mark featured cars
     
 class Review(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='reviews')
