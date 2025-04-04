@@ -81,6 +81,7 @@
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu{{ booking.id }}">
                                         <button class="dropdown-item view-details-btn" data-id="{{ booking.id }}">View Details</button>
                                         <button class="dropdown-item contact-support-btn">Contact Support</button>
+                                        <a class="dropdown-item" href="{% url 'generate_invoice_pdf' booking.id %}">Download Invoice</a>
                                     </div>
                                 </div>
                             </div>
@@ -172,8 +173,10 @@
                                                 {% if not booking.status %}
                                                     <a href="{% url 'cancelorder' booking.id %}" class="btn btn-outline-danger mr-3" onclick="return confirm('Are you sure you want to cancel this order?')">Cancel Order</a>
                                                     <a href="/pay/{{ booking.id }}" class="btn btn-outline-primary mr-3">Complete Payment</a>
+                                                    <a href="{% url 'generate_invoice_pdf' booking.id %}" class="btn btn-outline-success mr-3">Invoice</a>
                                                 {% else %}
-                                                    <span class="text-success"><i class="ion-ios-checkmark-circle"></i> Payment Complete</span>
+                                                    <span class="text-success mr-3"><i class="ion-ios-checkmark-circle"></i> Payment Complete</span>
+                                                    <a href="{% url 'generate_invoice_pdf' booking.id %}" class="btn btn-outline-success mr-3">Invoice</a>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -186,7 +189,7 @@
                 {% else %}
                     <div class="text-center py-5 empty-state">
                         <div class="mb-4 empty-icon">
-                            <i class="icon-car" style="font-size: 4rem; color: #ccc;"></i>
+                            <div class="icon-car" style="font-size: 4rem; color: #ccc;"></div>
                         </div>
                         <h3>You haven't made any bookings yet</h3>
                         <p class="mb-4">Browse our collection of cars and book your first ride!</p>
@@ -537,7 +540,7 @@ document.addEventListener('DOMContentLoaded', function() {
         notification.innerHTML = `
             ${message}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                <span aria-hidden="true">×</span>
             </button>
         `;
 

@@ -1,3 +1,4 @@
+
 {% extends 'header.html' %}
 {% load static %}
 {% block content %}
@@ -10,236 +11,16 @@
 	  Your browser does not support the video tag.
 	</video>
 	<style>
-        /* Reset and Base Styles */
-        :root {
-            --primary-color: #2C3E50;
-            --secondary-color: #3498DB;
-            --accent-color: #E74C3C;
-            --background-light: #F7F9FC;
-            --text-color: #2C3E50;
-            --border-radius: 12px;
-            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        }
-
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--background-light);
-            overflow-x: hidden;
-        }
-
-        /* Typography */
-        h1, h2, h3, h4, h5, h6 {
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        p {
-            margin-bottom: 1rem;
-            color: #4A4A4A;
-        }
-
-        /* Hero Section */
-        .hero-wrap {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            background: linear-gradient(135deg, rgba(44, 62, 80, 0.8), rgba(52, 152, 219, 0.6));
-        }
-
-        .video-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            opacity: 0.6;
-        }
-
-        .hero-wrap .text {
-            text-align: center;
-            color: white;
-            z-index: 2;
-            padding: 2rem;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: var(--border-radius);
-        }
-
-        /* Booking Form */
-        .request-form {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .request-form:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .request-form .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .request-form .form-control {
-            border: 1px solid #E0E0E0;
-            border-radius: 8px;
-            padding: 0.75rem;
-            transition: all 0.3s ease;
-        }
-
-        .request-form .form-control:focus {
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
-        }
-
-        /* Car Showcase */
-        .car-wrap {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            overflow: hidden;
-            transition: all 0.3s ease;
-            margin-bottom: 2rem;
-        }
-
-        .car-wrap:hover {
-            transform: scale(1.03);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .car-wrap .img {
-            height: 250px;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.3s ease;
-        }
-
-        .car-wrap:hover .img {
-            transform: scale(1.1);
-        }
-
-        /* Services Section */
-        .services {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            margin-bottom: 1.5rem;
-        }
-
-        .services .icon {
-            font-size: 3rem;
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
-        }
-
-        .services:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Testimonial Section */
-        .testimony-wrap {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .testimony-wrap .user-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* Blog Section */
-        .blog-entry {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .blog-entry .block-20 {
-            height: 250px;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.3s ease;
-        }
-
-        .blog-entry:hover .block-20 {
-            transform: scale(1.1);
-        }
-
-        /* Buttons */
-        .btn {
-            border-radius: 8px;
-            padding: 0.75rem 1.5rem;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .btn-primary {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-color);
-            transform: translateY(-3px);
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .hero-wrap {
-                height: auto;
-                padding: 2rem 0;
-            }
-
-            .request-form, .car-wrap, .services, .testimony-wrap {
-                margin-bottom: 1.5rem;
-            }
-        }
-
-        /* Counter Section */
-        .ftco-counter .block-18 {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .ftco-counter .number {
-            color: var(--secondary-color);
-            font-size: 2.5rem;
-            font-weight: 700;
-        }
-    </style>
+	.video-background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: -1;
+	  }
+	</style>
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text justify-content-start align-items-center justify-content-center">
@@ -257,7 +38,77 @@
       </div>
     </div>
 
-     
+     <section class="ftco-section ftco-no-pt bg-light">
+    	<div class="container">
+    		<div class="row no-gutters">
+    			<div class="col-md-12	featured-top">
+    				<div class="row no-gutters">
+	  					<div class="col-md-4 d-flex align-items-center">
+	  						<form action="#" class="request-form ftco-animate bg-primary">
+		          		<h2>Make your trip</h2>
+			    				<div class="form-group">
+			    					<label for="" class="label">Pick-up location</label>
+			    					<input type="text" class="form-control" placeholder="City, Airport, Station, etc">
+			    				</div>
+			    				<div class="form-group">
+			    					<label for="" class="label">Drop-off location</label>
+			    					<input type="text" class="form-control" placeholder="City, Airport, Station, etc">
+			    				</div>
+			    				<div class="d-flex">
+			    					<div class="form-group mr-2">
+			                <label for="" class="label">Pick-up date</label>
+			                <input type="text" class="form-control" id="book_pick_date" placeholder="Date">
+			              </div>
+			              <div class="form-group ml-2">
+			                <label for="" class="label">Drop-off date</label>
+			                <input type="text" class="form-control" id="book_off_date" placeholder="Date">
+			              </div>
+		              </div>
+		              <div class="form-group">
+		                <label for="" class="label">Pick-up time</label>
+		                <input type="text" class="form-control" id="time_pick" placeholder="Time">
+		              </div>
+			            <div class="form-group">
+			              <input type="submit" value="Rent A Car Now" class="btn btn-secondary py-3 px-4">
+			            </div>
+			    			</form>
+	  					</div>
+	  					<div class="col-md-8 d-flex align-items-center">
+	  						<div class="services-wrap rounded-right w-100">
+	  							<h3 class="heading-section mb-4">Better Way to Rent Your Perfect Cars</h3>
+	  							<div class="row d-flex mb-4">
+					          <div class="col-md-4 d-flex align-self-stretch ftco-animate">
+					            <div class="services w-100 text-center">
+				              	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-route"></span></div>
+				              	<div class="text w-100">
+					                <h3 class="heading mb-2">Choose Your Pickup Location</h3>
+				                </div>
+					            </div>      
+					          </div>
+					          <div class="col-md-4 d-flex align-self-stretch ftco-animate">
+					            <div class="services w-100 text-center">
+				              	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-handshake"></span></div>
+				              	<div class="text w-100">
+					                <h3 class="heading mb-2">Select the Best Deal</h3>
+					              </div>
+					            </div>      
+					          </div>
+					          <div class="col-md-4 d-flex align-self-stretch ftco-animate">
+					            <div class="services w-100 text-center">
+				              	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-rent"></span></div>
+				              	<div class="text w-100">
+					                <h3 class="heading mb-2">Reserve Your Rental Car</h3>
+					              </div>
+					            </div>      
+					          </div>
+					        </div>
+					        <p><a href="#" class="btn btn-primary py-3 px-4">Reserve Your Perfect Car</a></p>
+	  						</div>
+	  					</div>
+	  				</div>
+				</div>
+  		</div>
+    </section>
 
 
     <section class="ftco-section ftco-no-pt bg-light">
@@ -271,22 +122,62 @@
     		<div class="row">
     			<div class="col-md-12">
     				<div class="carousel-car owl-carousel">
-    					{% for car in car %}
-                    <div class="item">
-                        <div class="car-wrap rounded ftco-animate">
-                            <div class="img rounded d-flex align-items-end" style="background-image: url({{ car.cimage.url }});">
-                            </div>
-                            <div class="text">
-                                <h2 class="mb-0"><a href="#">{{ car.cname }}</a></h2>
-                                <div class="d-flex mb-3">
-                                    <span class="cat">{{ car.sfuel }}</span>
-                                    <p class="price ml-auto">${{ car.cprice }} <span>/day</span></p>
-                                </div>
-                                <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
+    					<div class="item">
+    						<div class="car-wrap rounded ftco-animate">
+		    					<div class="img rounded d-flex align-items-end" style="background-image: url({% static 'images/car-1.jpg' %});">
+		    					</div>
+		    					<div class="text">
+		    						<h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
+		    						<div class="d-flex mb-3">
+			    						<span class="cat">Cheverolet</span>
+			    						<p class="price ml-auto">$500 <span>/day</span></p>
+		    						</div>
+		    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+		    					</div>
+		    				</div>
+    					</div>
+    					<div class="item">
+    						<div class="car-wrap rounded ftco-animate">
+		    					<div class="img rounded d-flex align-items-end" style="background-image: url({% static 'images/car-2.jpg' %});">
+		    					</div>
+		    					<div class="text">
+		    						<h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
+		    						<div class="d-flex mb-3">
+			    						<span class="cat">Cheverolet</span>
+			    						<p class="price ml-auto">$500 <span>/day</span></p>
+		    						</div>
+		    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+		    					</div>
+		    				</div>
+    					</div>
+    					<div class="item">
+    						<div class="car-wrap rounded ftco-animate">
+		    					<div class="img rounded d-flex align-items-end" style="background-image: url({% static 'images/car-3.jpg' %});">
+		    					</div>
+		    					<div class="text">
+		    						<h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
+		    						<div class="d-flex mb-3">
+			    						<span class="cat">Cheverolet</span>
+			    						<p class="price ml-auto">$500 <span>/day</span></p>
+		    						</div>
+		    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+		    					</div>
+		    				</div>
+    					</div>
+    					<div class="item">
+    						<div class="car-wrap rounded ftco-animate">
+		    					<div class="img rounded d-flex align-items-end" style="background-image: url({% static 'images/car-4.jpg' %});">
+		    					</div>
+		    					<div class="text">
+		    						<h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
+		    						<div class="d-flex mb-3">
+			    						<span class="cat">Cheverolet</span>
+			    						<p class="price ml-auto">$500 <span>/day</span></p>
+		    						</div>
+		    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+		    					</div>
+		    				</div>
+    					</div>
     				</div>
     			</div>
     		</div>
@@ -543,7 +434,7 @@
         </div>
     	</div>
     </section>	
-	<script>(function(){var js,fs,d=document,id="tars-widget-script",b="https://tars-file-upload.s3.amazonaws.com/bulb/";if(!d.getElementById(id)){js=d.createElement("script");js.id=id;js.type="text/javascript";js.src=b+"js/widget.js";fs=d.getElementsByTagName("script")[0];fs.parentNode.insertBefore(js,fs)}})();window.tarsSettings = {"convid": "nvXCJJ", "href": "https://chatbot.hellotars.com/conv/nvXCJJ"};</script>
+	
 
     
   </body>

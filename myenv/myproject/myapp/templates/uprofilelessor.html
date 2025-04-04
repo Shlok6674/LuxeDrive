@@ -1,0 +1,104 @@
+{% extends 'lheader.html' %}
+
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{% static 'images/bg_3.jpg' %}');" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+        <div class="col-md-9 ftco-animate pb-5">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent p-0">
+              <li class="breadcrumb-item"><a href="{% url 'lindex' %}">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Update Profile</li>
+            </ol>
+          </nav>
+          <h1 class="mb-3 display-4 fw-bold text-white">Update Profile</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% if msg %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{msg}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}
+
+  <section class="ftco-section contact-section py-5">
+    <div class="container">
+      <div class="row g-5">
+        <!-- Contact Info Sidebar -->
+        <div class="col-lg-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h4 class="card-title mb-4">Contact Information</h4>
+              <div class="d-flex align-items-start mb-4">
+                <span class="icon-map-o fs-3 me-3 text-primary"></span>
+                <div>
+                  <h6>Address</h6>
+                  <p class="text-muted">198 West 21th Street, Suite 721 New York NY 10016</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-start mb-4">
+                <span class="icon-mobile-phone fs-3 me-3 text-primary"></span>
+                <div>
+                  <h6>Phone</h6>
+                  <a href="tel://1234567920" class="text-muted">+ 1235 2355 98</a>
+                </div>
+              </div>
+              <div class="d-flex align-items-start">
+                <span class="icon-envelope-o fs-3 me-3 text-primary"></span>
+                <div>
+                  <h6>Email</h6>
+                  <a href="mailto:info@yoursite.com" class="text-muted">info@yoursite.com</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Form -->
+        <div class="col-lg-8">
+          <div class="card shadow-sm">
+            <div class="card-body p-5">
+              <form method="post" action="{% url 'uprofilelessor' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" class="form-control form-control-lg" id="name" name="name" value="{{user.name}}" placeholder="Enter your name">
+                  </div>
+                  <div class="col-12">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control form-control-lg" id="email" name="email" value="{{user.email}}" disabled>
+                  </div>
+                  <div class="col-12">
+                    <label for="mobile" class="form-label">Mobile Number</label>
+                    <input type="tel" class="form-control form-control-lg" id="mobile" name="mobile" value="{{user.mobile}}" placeholder="Enter your mobile number">
+                  </div>
+                  <div class="col-12">
+                    <label for="profile" class="form-label">Profile Picture</label>
+                    <div class="mb-3">
+                      <img src="{{user.profile.url}}" class="rounded-circle" height="100" width="100" alt="Profile Picture">
+                    </div>
+                    <input type="file" class="form-control" id="profile" name="profile" accept="image/*">
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-lg w-100">Update Profile</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</html>
+{% endblock %}

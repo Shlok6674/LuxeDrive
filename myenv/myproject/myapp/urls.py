@@ -41,7 +41,7 @@ urlpatterns = [
    path('view/', views.view, name='view'),
    path('details/<int:pk>',views.details,name='details'),
    path('update/<int:pk>',views.update,name='update'),
-   
+   path('uprofilelessor/',views.uprofilelessor,name='uprofilelessor'),
    path('car/carsingle/', views.carsingle, name='carsingle'),
    path('delete/<int:pk>',views.delete,name='delete'),
     path('cart/<int:pk>/', views.cart, name='cart'),
@@ -52,7 +52,6 @@ urlpatterns = [
     path('myorder/', views.myorder, name='myorder'),
     path('cancelorder/<int:booking_id>/', views.cancelorder, name='cancelorder'),
     path('pay/<int:booking_id>/', views.pay, name='pay'),
-    
-    
+  path('invoice/<int:pk>/', views.generate_invoice_pdf, name='generate_invoice_pdf'),
 
    ]

@@ -51,8 +51,7 @@ class Car(models.Model):
     remotecontrollocking=models.BooleanField(default=True)
     climatecontrol=models.BooleanField(default=True) 
     cprice = models.IntegerField(null=True, blank=True)
-    cimage = models.ImageField(default="")
-    is_featured = models.BooleanField(default=True)  # Add this field to mark featured cars
+    cimage = models.ImageField(default="")      
     
 class Review(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='reviews')
@@ -85,3 +84,13 @@ class Booking(models.Model):
 
 
 
+def save(self, *args, **kwargs):
+        # Calculate total days and amount
+        if self.start_date and self.end_date:
+            self.total_days = (self.end_date - self.start_date).days
+            self.total_amount = self.total_days * self.car.cprice
+        super().save(*args, **kwargs)
+        
+        
+def __str__(self):
+         return f"Booking #{self.id} - {self.car.cname}"

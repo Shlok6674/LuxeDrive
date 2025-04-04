@@ -6,17 +6,27 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from.models import User
-from django.http import JsonResponse,HttpResponse
+from django.http import JsonResponse, HttpResponse, FileResponse, Http404
 from.models import Car
 from.models import Review
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 import razorpay
- 
+from django.template.loader import render_to_string
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
+from reportlab.lib import colors
+from io import BytesIO
+from reportlab.lib.utils import ImageReader
+from .models import Booking 
 
 from django.contrib.auth.hashers import make_password
 
 from django.utils.timezone import now
+import datetime
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
@@ -24,9 +34,7 @@ from django.core.exceptions import ValidationError
 # Create your views here.
 
 def index(request):
-    # Fetch featured cars from the database
-    featured_cars = Car.objects.filter(is_featured=True)  # Use the is_featured field
-    return render(request, 'index.html', {'car': featured_cars})
+    return render(request, 'index.html')
 
 def signup(request):
     if request.method == "POST":
@@ -233,19 +241,18 @@ def blogsingle(request):
 
 
 def car(request):
-    email = request.session.get('email')  # Retrieve email from session
-
-    if not email:  # If email is not found in the session, redirect to login
-        return redirect('login')  # Replace 'login' with your actual login route name
-
     try:
-       user = User.objects.get(email=email)  # Try to fetch the user
-    except User.DoesNotExist:
-            messages.error(request, "User not found. Please log in again.")  # Add error message
-            return redirect('login')  # Redirect to login page if the user doesn't exist
-
-    car = Car.objects.all()  # Fetch all car objects
-    return render(request, 'car.html', {'car': car}) 
+        query = request.GET.get('q', '')  # Safely get 'q'
+        print("Received Query:", query)  # Debugging output
+        if query:
+            car = Car.objects.filter(cname__icontains=query)
+        else:
+            car = Car.objects.all()
+        return render(request, 'car.html', {'car': car})
+    except Exception as e:
+        print("Error:", e)
+        msg = "Please Login First!"
+        return render(request, 'login.html',{'msg':msg})
 
 
 
@@ -294,33 +301,31 @@ def view(request):
 
 def update(request, pk):
     car = get_object_or_404(Car, pk=pk)
-    
     if request.method == 'POST':
+        car.cname = request.POST.get('cname')
+        car.cprice = request.POST.get('cprice')
+        car.milegae = request.POST.get('milegae')
+        car.stransmission = request.POST.get('stransmission')
+        car.seats = request.POST.get('seats')
+        car.luggage = request.POST.get('luggage')
+        car.sfuel = request.POST.get('sfuel')
+        car.desc = request.POST.get('desc')
+        if 'cimage' in request.FILES:
+            car.cimage = request.FILES['cimage']
         try:
-            # Get form data with get() method to avoid MultiValueDictKeyError
-            car.cname = request.POST.get('cname', car.cname)
-            car.cprice = request.POST.get('cprice', car.cprice)
-            car.milegae = request.POST.get('mileage', car.milegae)
-            car.stransmission = request.POST.get('stransmission', car.stransmission)
-            car.seats = request.POST.get('seats', car.seats)
-            car.luggage = request.POST.get('luggage', car.luggage)
-            car.sfuel = request.POST.get('sfuel', car.sfuel)
-            car.desc = request.POST.get('desc', car.desc)
-            
-            # Handle image upload if a new image is provided
-            if 'cimage' in request.FILES:
-                car.cimage = request.FILES['cimage']
-            
+            if not car.cname or not car.cprice:
+                raise ValueError("Car name and price are required.")
+            car.cprice = float(car.cprice)
+            car.seats = int(car.seats) if car.seats else None
+            car.luggage = int(car.luggage) if car.luggage else None
             car.save()
-            messages.success(request, 'Car details updated successfully!')
-            return redirect('details', pk=car.id)
-            
+            messages.success(request, f"'{car.cname}' updated successfully!")
+            return redirect('view')
+        except ValueError as e:
+            messages.error(request, str(e))
         except Exception as e:
-            messages.error(request, f'Error updating car: {str(e)}')
-    
-    # For GET requests, just display the form
+            messages.error(request, "An error occurred while updating the car.")
     return render(request, 'update.html', {'car': car})
-
 
 def delete(request,pk):
     lessor = User.objects.get(email=request.session['email'])
@@ -332,28 +337,79 @@ def cart(request, pk):
     try:
         user = User.objects.get(email=request.session['email'])
         car = Car.objects.get(pk=pk)
+
         if request.method == "POST":
-            total_days = int(request.POST['total_days'])
+            # Validate total_days
+            total_days_str = request.POST.get('total_days', '')
+
+            if not total_days_str:
+                messages.error(request, "Total days cannot be empty")
+                return render(request, 'cart.html', {'car': car, 'user': user, 'error': "Please select valid dates"})
+
+            try:
+                total_days = int(total_days_str)
+                if total_days <= 0:
+                    messages.error(request, "Total days must be at least 1")
+                    return render(request, 'cart.html', {'car': car, 'user': user, 'error': "Total days must be at least 1"})
+            except ValueError:
+                messages.error(request, "Invalid value for total days")
+                return render(request, 'cart.html', {'car': car, 'user': user, 'error': "Please enter a valid number for total days"})
+
+            # Validate start_date & end_date
+            start_date_str = request.POST.get('start_date', '')
+            end_date_str = request.POST.get('end_date', '')
+
+            if not start_date_str or not end_date_str:
+                messages.error(request, "Both start date and end date are required")
+                return render(request, 'cart.html', {'car': car, 'user': user, 'error': "Please select valid dates"})
+
+            try:
+                # Use datetime.datetime.strptime instead of datetime.strptime
+                start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d").date()
+                end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d").date()
+
+                if end_date < start_date:
+                    messages.error(request, "End date cannot be before start date")
+                    return render(request, 'cart.html', {'car': car, 'user': user, 'error': "End date must be after start date"})
+            except ValueError:
+                messages.error(request, "Invalid date format. Please use YYYY-MM-DD")
+                return render(request, 'cart.html', {'car': car, 'user': user, 'error': "Invalid date format"})
+
+            # Calculate total amount
             total_amount = total_days * car.cprice
+
+            # Create booking
             booking = Booking.objects.create(
                 user=user,
                 car=car,
-                pickup_address=request.POST['pickup_address'],
-                drop_address=request.POST['drop_address'],
-                start_date=request.POST['start_date'],
-                end_date=request.POST['end_date'],
-                pick_time=request.POST['pick_time'],
+                pickup_address=request.POST.get('pickup_address', ''),
+                drop_address=request.POST.get('drop_address', ''),
+                start_date=start_date,
+                end_date=end_date,
+                pick_time=request.POST.get('pick_time', ''),
                 total_days=total_days,
                 total_amount=total_amount,
                 status=False  # Default to pending
             )
-            return redirect('summary', pk=booking.id)  # Pass booking ID instead of car ID
+
+            return redirect('summary', pk=booking.id)  # Redirect to summary page
         else:
             return render(request, 'cart.html', {'car': car, 'user': user})
-    except Exception as e:
-        print(f"Error in cart view: {e}")
+
+    except KeyError as e:
+        print(f"Session key error: {e}")
         messages.error(request, "Please login first")
         return render(request, 'login.html', {'msg': "Please login first"})
+    except User.DoesNotExist:
+        messages.error(request, "User account not found")
+        return render(request, 'login.html', {'msg': "User account not found. Please login again."})
+    except Car.DoesNotExist:
+        messages.error(request, "Car not found")
+        return redirect('index')
+    except Exception as e:
+        print(f"Error in cart view: {e}")
+        messages.error(request, "An error occurred. Please try again.")
+        return render(request, 'cart.html', {'car': car, 'user': user, 'error': "An error occurred. Please try again."})
     
 
 
@@ -389,18 +445,36 @@ def success(request):
     try:
         payment_id = request.GET.get('razorpay_payment_id')
         user = User.objects.get(email=request.session['email'])
-        booking = Booking.objects.filter(user=user).order_by('-id').first()  # Get the latest booking
         
-        if booking and not booking.status:  # Only update if unpaid
+        # Get the latest booking for this user
+        booking = Booking.objects.filter(user=user).order_by('-id').first()
+        
+        if booking is None:
+            messages.error(request, "No booking found")
+            return redirect('index')
+            
+        if not booking.status:  # Only update if unpaid
             booking.payment_id = payment_id
             booking.status = True
             booking.save()
         
-        return render(request, 'success.html', {'booking': booking})
+        # Make sure we explicitly pass both booking and amount to the template
+        context = {
+            'booking': booking,
+            'amount': booking.total_amount,  # Explicitly include amount
+            'payment_id': payment_id
+        }
+        
+        print(f"Debug: Booking amount is {booking.total_amount}")  # Debugging
+        
+        return render(request, 'success.html', context)
+    except User.DoesNotExist:
+        messages.error(request, "User not found. Please login again.")
+        return redirect('login')
     except Exception as e:
         print(f"Error in success view: {e}")
+        messages.error(request, "Something went wrong with your payment")
         return redirect('index')
-
 
    
 def myorder(request):
@@ -479,4 +553,94 @@ def pay(request, booking_id):
         print(f"Error in pay view: {e}")
         messages.error(request, "Something went wrong. Please try again.")
         return redirect('myorder')
+    
+
+def generate_invoice_pdf(request, pk):
+    if 'email' not in request.session:
+        return redirect('login')
+    
+    user = get_object_or_404(User, email=request.session['email'])
+    booking = get_object_or_404(Booking, id=pk, user=user)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="invoice_{booking.pk}.pdf"'
+    
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+
+    # Adding JoyRide Logo
+    logo_path = "static/images/logo.png"  # Adjust the path accordingly
+    try:
+        logo = ImageReader(logo_path)
+        p.drawImage(logo, 420, height - 80, width=100, height=50, mask='auto')
+    except Exception as e:
+        print(f"Error loading logo: {e}")
+
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(100, height - 50, "Invoice")
+    p.setFont("Helvetica", 12)
+    p.drawString(100, height - 80, f"Booking ID: {booking.id}")
+    p.drawString(100, height - 100, f"Date: {booking.start_date.strftime('%Y-%m-%d')}")
+
+    p.drawString(400, height - 50, "Car Rental Co.")
+    p.drawString(400, height - 70, "123 Rental Street")
+    p.drawString(400, height - 90, "City, State, ZIP")
+
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(100, height - 140, "Billed To:")
+    p.setFont("Helvetica", 12)
+    p.drawString(100, height - 160, f"{user.name or user.email}")
+    p.drawString(100, height - 180, f"{booking.pickup_address}")
+
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(100, height - 220, "Description")
+    p.drawString(400, height - 220, "Amount")
+    p.line(100, height - 225, 500, height - 225)
+
+    p.setFont("Helvetica", 12)
+    p.drawString(100, height - 250, f"Car: {booking.car.cname}")
+    p.drawString(400, height - 250, f"₹ {booking.car.cprice} / day")
+    p.drawString(100, height - 270, f"Duration: {booking.total_days} days")
+    p.drawString(400, height - 270, f"₹ {booking.total_amount}")
+    p.drawString(100, height - 290, f"Pickup: {booking.start_date} {booking.pick_time}")
+    p.drawString(100, height - 310, f"Dropoff: {booking.end_date}")
+
+    p.line(100, height - 325, 500, height - 325)
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(400, height - 350, f"Total: ₹ {booking.total_amount}")
+
+    p.setFont("Helvetica", 10)
+    p.drawString(100, 50, "Thank you for choosing us! Contact support at support@carrental.com")
+
+    p.showPage()
+    p.save()
+
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response
+
+def uprofilelessor(request):
+    try:
+        user = User.objects.get(email=request.session['email'])
+    except User.DoesNotExist:
+        return redirect('login')  # Redirect if user not found (session expired, etc.)
+
+    if request.method == "POST":
+        user.name = request.POST.get('name', user.name)  # Use `.get()` to avoid KeyError
+        user.mobile = request.POST.get('mobile', user.mobile)
+
+        # Save the user details first
+        user.save()
+
+        # Handle profile picture update safely
+        if 'profile' in request.FILES:
+            user.profile = request.FILES['profile']
+            user.save()
+            request.session['profile'] = user.profile.url  # Update session with new image
+
+        return redirect('index')  # Redirect to home after updating profile
+
+    return render(request, 'uprofilelessor.html', {'user': user})
 

@@ -1,139 +1,362 @@
+
 {% extends 'header.html' %}
 {% load static %}
 {% block content %}
-
-<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{% static 'images/bg_3.jpg' %}');" data-stellar-background-ratio="0.5">
-    <div class="overlay"></div>
-    <div class="container">
+<!DOCTYPE html>
+<html lang="en">
+  
+    
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{% static 'images/bg_3.jpg' %}');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
-            <div class="col-md-9 ftco-animate pb-5">
-                <p class="breadcrumbs"><span class="mr-2"><a href="{%url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Update Car <i class="ion-ios-arrow-forward"></i></span></p>
-                <h1 class="mb-3 bread">Update Car Details</h1>
-            </div>
+          <div class="col-md-9 ftco-animate pb-5">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Car details <i class="ion-ios-arrow-forward"></i></span></p>
+            <h1 class="mb-3 bread">Car Details</h1>
+          </div>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
+		
 
-<section class="ftco-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 ftco-animate">
-                <div class="card shadow">
-                    <div class="card-header bg-primary">
-                        <h3 class="text-white mb-0">Update Car Information</h3>
-                    </div>
-                    <div class="card-body p-4">
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                            {% endfor %}
-                        {% endif %}
-                        
-                        <form method="POST" action="{% url 'update' car.id %}" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            
-                            <div class="row">
-                                <div class="col-md-6 form-group">
-                                    <label for="cname" class="font-weight-bold">Car Name</label>
-                                    <input type="text" id="cname" name="cname" class="form-control" value="{{ car.cname }}" required>
-                                </div>
-                                
-                                <div class="col-md-6 form-group">
-                                    <label for="cprice" class="font-weight-bold">Car Price (per day)</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">$</span>
-                                        </div>
-                                        <input type="number" id="cprice" name="cprice" class="form-control" value="{{ car.cprice }}" min="0" step="0.01" required>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6 form-group">
-                                    <label for="mileage" class="font-weight-bold">Mileage</label>
-                                    <div class="input-group">
-                                        <input type="text" id="mileage" name="mileage" class="form-control" value="{{ car.mileage }}" required>
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">km/l</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6 form-group">
-                                    <label for="stransmission" class="font-weight-bold">Transmission</label>
-                                    <select id="stransmission" name="stransmission" class="form-control">
-                                        <option value="Automatic" {% if car.stransmission == 'Automatic' %}selected{% endif %}>Automatic</option>
-                                        <option value="Manual" {% if car.stransmission == 'Manual' %}selected{% endif %}>Manual</option>
-                                        <option value="CVT" {% if car.stransmission == 'CVT' %}selected{% endif %}>CVT</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-4 form-group">
-                                    <label for="seats" class="font-weight-bold">Seats</label>
-                                    <input type="number" id="seats" name="seats" class="form-control" value="{{ car.seats }}" min="1" max="10" required>
-                                </div>
-                                
-                                <div class="col-md-4 form-group">
-                                    <label for="luggage" class="font-weight-bold">Luggage Capacity</label>
-                                    <input type="number" id="luggage" name="luggage" class="form-control" value="{{ car.luggage }}" min="0" required>
-                                </div>
-                                
-                                <div class="col-md-4 form-group">
-                                    <label for="sfuel" class="font-weight-bold">Fuel Type</label>
-                                    <select id="sfuel" name="sfuel" class="form-control">
-                                        <option value="Petrol" {% if car.sfuel == 'Petrol' %}selected{% endif %}>Petrol</option>
-                                        <option value="Diesel" {% if car.sfuel == 'Diesel' %}selected{% endif %}>Diesel</option>
-                                        <option value="Electric" {% if car.sfuel == 'Electric' %}selected{% endif %}>Electric</option>
-                                        <option value="Hybrid" {% if car.sfuel == 'Hybrid' %}selected{% endif %}>Hybrid</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="desc" class="font-weight-bold">Description</label>
-                                <textarea id="desc" name="desc" class="form-control" rows="4">{{ car.desc }}</textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="cimage" class="font-weight-bold">Car Image</label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="cimage" name="cimage">
-                                    <label class="custom-file-label" for="cimage">{{ car.cimage.name|default:"Choose file" }}</label>
-                                </div>
-                                {% if car.cimage %}
-                                <div class="mt-2">
-                                    <img src="{{ car.cimage.url }}" alt="{{ car.cname }}" class="img-thumbnail" style="max-height: 100px;">
-                                    <p class="text-muted small">Current image. Upload a new one to replace.</p>
-                                </div>
-                                {% endif %}
-                            </div>
-                            
-                            <div class="form-group mt-4 text-center">
-                                <button type="submit" class="btn btn-primary btn-lg px-5">Update Car</button>
-                                <a href="{% url 'details' pk=car.pk %}" class="btn btn-secondary btn-lg px-5 ml-2">Cancel</a>
-                            </div>
-                        </form>
-                    </div>
+		<section class="ftco-section ftco-car-details">
+      <div class="container">
+      	<div class="row justify-content-center">
+      		<div class="col-md-12">
+      			<div class="car-details">
+      				<div class="img rounded" style="background-image: url({{car.cimage.url}});"></div>
+      				<div class="text text-center">
+      					<span class="subheading">{{car.cname}}</span>
+      					<h2>{{car.cname}}</h2>
+      				</div>
+      			</div>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-md d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services">
+              <div class="media-body py-md-4">
+              	<div class="d-flex mb-3 align-items-center">
+	              	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-dashboard"></span></div>
+	              	<div class="text">
+		                <h3 class="heading mb-0 pl-3">
+		                	Mileage
+		                	<span>{{car.milegae}}</span>
+		                </h3>
+	                </div>
                 </div>
-            </div>
+              </div>
+            </div>      
+          </div>
+          <div class="col-md d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services">
+              <div class="media-body py-md-4">
+              	<div class="d-flex mb-3 align-items-center">
+	              	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-pistons"></span></div>
+	              	<div class="text">
+		                <h3 class="heading mb-0 pl-3">
+		                	Transmission
+		                	<span>{{car.stransmission}}</span>
+		                </h3>
+	                </div>
+                </div>
+              </div>
+            </div>      
+          </div>
+          <div class="col-md d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services">
+              <div class="media-body py-md-4">
+              	<div class="d-flex mb-3 align-items-center">
+	              	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-car-seat"></span></div>
+	              	<div class="text">
+		                <h3 class="heading mb-0 pl-3">
+		                	Seats
+		                	<span>{{car.seats}}</span>
+		                </h3>
+	                </div>
+                </div>
+              </div>
+            </div>      
+          </div>
+          <div class="col-md d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services">
+              <div class="media-body py-md-4">
+              	<div class="d-flex mb-3 align-items-center">
+	              	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-backpack"></span></div>
+	              	<div class="text">
+		                <h3 class="heading mb-0 pl-3">
+		                	Luggage
+		                	<span>{{car.luggage}}</span>
+		                </h3>
+	                </div>
+                </div>
+              </div>
+            </div>      
+          </div>
+          <div class="col-md d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services">
+              <div class="media-body py-md-4">
+              	<div class="d-flex mb-3 align-items-center">
+	              	<div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-diesel"></span></div>
+	              	<div class="text">
+		                <h3 class="heading mb-0 pl-3">
+		                	Fuel
+		                	<span>{{car.sfuel}}</span>
+		                </h3>
+	                </div>
+                </div>
+              </div>
+            </div>      
+          </div>
+      	</div>
+      	<div class="row">
+      		<div class="col-md-12 pills">
+						<div class="bd-example bd-example-tabs">
+							<div class="d-flex justify-content-center">
+							  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+
+							    <li class="nav-item">
+							      <a class="nav-link active" id="pills-description-tab" data-toggle="pill" href="#pills-description" role="tab" aria-controls="pills-description" aria-expanded="true">Features</a>
+							    </li>
+							    <li class="nav-item">
+							      <a class="nav-link" id="pills-manufacturer-tab" data-toggle="pill" href="#pills-manufacturer" role="tab" aria-controls="pills-manufacturer" aria-expanded="true">Description</a>
+							    </li>
+							    <li class="nav-item">
+							      <a class="nav-link" id="pills-review-tab" data-toggle="pill" href="#pills-review" role="tab" aria-controls="pills-review" aria-expanded="true">Review</a>
+							    </li>
+							  </ul>
+							</div>
+
+						  <div class="tab-content" id="pills-tabContent">
+						    <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab">
+						    	<div class="row">
+						    		<div class="col-md-4">
+						    			<ul class="features">
+						    				<li class="check"><span class="ion-ios-checkmark"></span>Airconditions</li>
+						    				<li class="check"><span class="ion-ios-checkmark"></span>Child Seat</li>
+						    				<li class="check"><span class="ion-ios-checkmark"></span>GPS</li>
+						    				<li class="check"><span class="ion-ios-checkmark"></span>Luggage</li>
+						    				<li class="check"><span class="ion-ios-checkmark"></span>Music</li>
+						    			</ul>
+						    		</div>
+						    		<div class="col-md-4">
+						    			<ul class="features">
+						    				<li class="check"><span class="ion-ios-checkmark"></span>Seat Belt</li>
+						    				<li class="remove"><span class="ion-ios-close"></span>Sleeping Bed</li>
+						    				<li class="check"><span class="ion-ios-checkmark"></span>Water</li>
+						    				<li class="check"><span class="ion-ios-checkmark"></span>Bluetooth</li>
+						    				<li class="remove"><span class="ion-ios-close"></span>Onboard computer</li>
+						    			</ul>
+						    		</div>
+						    		<div class="col-md-4">
+						    			<ul class="features">
+						    				<li class="check"><span class="ion-ios-checkmark"></span>Audio input</li>
+						    				<li class="check"><span class="ion-ios-checkmark"></span>Long Term Trips</li>
+						    				<li class="check"><span class="ion-ios-checkmark"></span>Car Kit</li>
+						    				<li class="check"><span class="ion-ios-checkmark"></span>Remote central locking</li>
+						    				<li class="check"><span class="ion-ios-checkmark"></span>Climate control</li>
+						    			</ul>
+						    		</div>
+						    	</div>
+						    </div>
+
+						    <div class="tab-pane fade" id="pills-manufacturer" role="tabpanel" aria-labelledby="pills-manufacturer-tab">
+						      <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p>
+									<p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
+						    </div>
+
+						    <div class="tab-pane fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
+						      <div class="row">
+							   		<div class="col-md-7">
+							   			<h3 class="head">23 Reviews</h3>
+							   			<div class="review d-flex">
+									   		<div class="user-img" style="background-image: url({% static 'images/person_1.jpg' %})"></div>
+									   		<div class="desc">
+									   			<h4>
+									   				<span class="text-left">Jacob Webb</span>
+									   				<span class="text-right">14 March 2018</span>
+									   			</h4>
+									   			<p class="star">
+									   				<span>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+								   					</span>
+								   					<span class="text-right"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
+									   			</p>
+									   			<p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
+									   		</div>
+									   	</div>
+									   	<div class="review d-flex">
+									   		<div class="user-img" style="background-image: url({% static 'images/person_2.jpg' %})"></div>
+									   		<div class="desc">
+									   			<h4>
+									   				<span class="text-left">Jacob Webb</span>
+									   				<span class="text-right">14 March 2018</span>
+									   			</h4>
+									   			<p class="star">
+									   				<span>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+								   					</span>
+								   					<span class="text-right"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
+									   			</p>
+									   			<p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
+									   		</div>
+									   	</div>
+									   	<div class="review d-flex">
+									   		<div class="user-img" style="background-image: url({% static 'images/person_3.jpg' %})"></div>
+									   		<div class="desc">
+									   			<h4>
+									   				<span class="text-left">Jacob Webb</span>
+									   				<span class="text-right">14 March 2018</span>
+									   			</h4>
+									   			<p class="star">
+									   				<span>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+								   					</span>
+								   					<span class="text-right"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
+									   			</p>
+									   			<p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
+									   		</div>
+									   	</div>
+							   		</div>
+							   		<div class="col-md-5">
+							   			<div class="rating-wrap">
+								   			<h3 class="head">Give a Review</h3>
+								   			<div class="wrap">
+									   			<p class="star">
+									   				<span>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					(98%)
+								   					</span>
+								   					<span>20 Reviews</span>
+									   			</p>
+									   			<p class="star">
+									   				<span>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					(85%)
+								   					</span>
+								   					<span>10 Reviews</span>
+									   			</p>
+									   			<p class="star">
+									   				<span>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					(70%)
+								   					</span>
+								   					<span>5 Reviews</span>
+									   			</p>
+									   			<p class="star">
+									   				<span>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					(10%)
+								   					</span>
+								   					<span>0 Reviews</span>
+									   			</p>
+									   			<p class="star">
+									   				<span>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					<i class="ion-ios-star"></i>
+									   					(0%)
+								   					</span>
+								   					<span>0 Reviews</span>
+									   			</p>
+									   		</div>
+								   		</div>
+							   		</div>
+							   	</div>
+						    </div>
+						  </div>
+						</div>
+		      </div>
+				</div>
+      </div>
+    </section>
+
+    <section class="ftco-section ftco-no-pt">
+    	<div class="container">
+    		<div class="row justify-content-center">
+          <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+          	<span class="subheading">Choose Car</span>
+            <h2 class="mb-2">Related Cars</h2>
+          </div>
         </div>
-    </div>
-</section>
+        <div class="row">
+        	<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url({% static 'images/car-1.jpg' %});">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Mercedes Grand Sedan</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Cheverolet</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url({% static 'images/car-2.jpg' %});">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Range Rover</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Subaru</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-md-4">
+    				<div class="car-wrap rounded ftco-animate">
+    					<div class="img rounded d-flex align-items-end" style="background-image: url({% static 'images/car-3.jpg' %});">
+    					</div>
+    					<div class="text">
+    						<h2 class="mb-0"><a href="car-single.html">Mercedes Grand Sedan</a></h2>
+    						<div class="d-flex mb-3">
+	    						<span class="cat">Cheverolet</span>
+	    						<p class="price ml-auto">$500 <span>/day</span></p>
+    						</div>
+    						<p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="car-single.html" class="btn btn-secondary py-2 ml-1">Details</a></p>
+    					</div>
+    				</div>
+    			</div>
+        </div>
+    	</div>
+    </section>
+    
 
-{% endblock %}
-
-{% block scripts %}
-<script>
-    // Show filename when file is selected
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelector('.custom-file-input').addEventListener('change', function(e) {
-            var fileName = e.target.files[0].name;
-            var nextSibling = e.target.nextElementSibling;
-            nextSibling.innerText = fileName;
-        });
-    });
-</script>
+  </body>
+</html>
 {% endblock %}
