@@ -34,7 +34,8 @@ from django.core.exceptions import ValidationError
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
+    featured_cars = Car.objects.all().order_by('-id')[:]  # Fetch the latest 4 cars
+    return render(request, 'index.html', {'featured_cars': featured_cars})
 
 def signup(request):
     if request.method == "POST":
@@ -644,3 +645,11 @@ def uprofilelessor(request):
 
     return render(request, 'uprofilelessor.html', {'user': user})
 
+
+def pricing(request):
+    """Render the pricing page."""
+    cars = Car.objects.all()  # Fetch all cars for pricing
+    context = {
+        'car': cars,
+    }
+    return render(request, 'pricing.html', context)

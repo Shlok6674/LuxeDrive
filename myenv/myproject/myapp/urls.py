@@ -53,5 +53,6 @@ urlpatterns = [
     path('cancelorder/<int:booking_id>/', views.cancelorder, name='cancelorder'),
     path('pay/<int:booking_id>/', views.pay, name='pay'),
   path('invoice/<int:pk>/', views.generate_invoice_pdf, name='generate_invoice_pdf'),
+  path('pricing/', views.pricing, name='pricing'),
 
    ]

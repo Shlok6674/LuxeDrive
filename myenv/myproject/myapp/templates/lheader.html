@@ -42,11 +42,11 @@
 	        
 	          <li class="nav-item"><a href="{% url 'add' %}" class="nav-link">Add-Car</a></li>
 	          <li class="nav-item"><a href="{% url 'view' %}" class="nav-link">View-Car</a></li>
-	          <a href="{% url 'uprofilelessor' %}"><img src="{{request.session.profile}}" height="50px" width="50px" style="border-radius : 100px"></a> 
-            {% if request.session.email %}
+	          
             <li class="nav-item"><a href="{% url 'cpass' %}" class="nav-link">Change Password</a></li>
             <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
-
+            <a href="{% url 'uprofilelessor' %}"><img src="{{request.session.profile}}" height="50px" width="50px" style="border-radius : 100px"></a> 
+            {% if request.session.email %}
            
             {% else %}
 	          <li class="nav-item"><a href="{% url 'signup' %}" class="nav-link">Signup</a></li>
