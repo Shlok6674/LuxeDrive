@@ -1,218 +1,293 @@
 {% extends 'header.html' %}
 {% load static %}
 {% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Services</title>
     <style>
-        /* Service Cards Styling */
-        .service-card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            padding: 30px 20px;
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
-            height: 100%;
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #F5F5E8; /* Light cream */
+            color: #1A3C34; /* Deep teal */
+            line-height: 1.6;
         }
-        
-        .service-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background-color: #01d28e;
-            border-radius: 50%;
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 30px;
-            transition: all 0.3s ease;
-        }
-        
-        .service-card:hover .service-icon {
-            background-color: #1089ff;
-            transform: rotate(360deg);
-        }
-        
-        .service-title {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .service-text {
-            color: #666;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        
-        /* Hero Section Enhancement */
-        .hero-wrap-2 {
-            position: relative;
+            text-align: center;
+            overflow: hidden;
+            background-image: url({% static 'images/bg_3.jpg' %});
             background-size: cover;
-            background-position: center center;
-            height: 400px !important;
+            background-position: center;
         }
-        
-        .hero-wrap-2 .overlay {
+        .hero .overlay {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
+            width: 100%;
+            height: 100%;
+            background: transparency;
+            z-index: 0;
         }
-        
-        .slider-text {
-            height: 400px !important;
-            color: #fff;
-        }
-        
-        .breadcrumbs {
-            font-size: 16px;
-            font-weight: 400;
-        }
-        
-        .breadcrumbs a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-        }
-        
-        .breadcrumbs a:hover {
-            color: #1089ff;
-        }
-        
-        .bread {
-            font-size: 46px;
-            font-weight: 700;
-            color: #fff;
-        }
-        
-        /* Section Heading Styling */
-        .heading-section .subheading {
-            font-size: 14px;
-            display: block;
-            margin-bottom: 5px;
-            color: #1089ff;
+        .hero-content h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 70px;
+            color: #D4A017; /* Soft gold */
             text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            z-index: 1;
         }
-        
-        .heading-section h2 {
-            font-size: 36px;
-            font-weight: 700;
-            color: #333;
+        .hero-content p {
+            font-size: 24px;
+            color: #F5F5E8; /* Light cream */
+            max-width: 700px;
+            z-index: 1;
+        }
+
+        /* General Section Styles */
+        section {
+            padding: 100px 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 40px;
+            color: #1A3C34; /* Deep teal */
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .subheading {
+            font-size: 16px;
+            color: #D4A017; /* Soft gold */
+            text-transform: uppercase;
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .service-card {
+            background: #E8ECE5; /* Slightly darker cream */
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(26, 60, 52, 0.2);
+        }
+        .service-card .icon span {
+            font-size: 50px;
+            color: #D4A017; /* Soft gold */
+        }
+        .service-card h3 {
+            font-size: 22px;
+            color: #1A3C34; /* Deep teal */
+            margin: 20px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #D4A017; /* Soft gold */
+            color: #1A3C34; /* Deep teal */
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .btn:hover {
+            background: #1A3C34; /* Deep teal */
+            color: #F5F5E8; /* Light cream */
+        }
+
+        /* About Section */
+        .about-section {
+            display: flex;
+            align-items: center;
+            background: #E8ECE5; /* Slightly darker cream */
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .about-img {
+            flex: 1;
+            height: 500px;
+            background-size: cover;
+            background-position: center;
+            background-image: url({% static 'images/about.jpg' %});
+        }
+        .about-text {
+            flex: 1;
+            padding: 50px;
+        }
+        .about-text h2 {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .about-text p {
+            margin-bottom: 20px;
+        }
+
+        /* Counter Section */
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            text-align: center;
+        }
+        .counter-item .number {
+            font-size: 50px;
+            color: #D4A017; /* Soft gold */
+            font-weight: bold;
+        }
+        .counter-item span {
+            font-size: 18px;
+            color: #1A3C34; /* Deep teal */
+        }
+
+        /* Responsive */
+        @media (max-width: 991.98px) {
+            .hero {
+                height: 70vh;
+            }
+            .hero-content h1 {
+                font-size: 50px;
+            }
+            .hero-content p {
+                font-size: 18px;
+            }
+            .about-section {
+                flex-direction: column;
+            }
+            .about-img, .about-text {
+                flex: none;
+                width: 100%;
+            }
+            .about-img {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .hero {
+                height: 60vh;
+            }
+            .hero-content h1 {
+                font-size: 40px;
+            }
+            .hero-content p {
+                font-size: 16px;
+            }
+            h2 {
+                font-size: 30px;
+            }
+            .about-text {
+                padding: 30px;
+            }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Hero Section -->
-    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url({% static 'images/bg_3.jpg' %});" data-stellar-background-ratio="0.5">
+    <section class="hero">
         <div class="overlay"></div>
-        <div class="container">
-            <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
-                <div class="col-md-9 ftco-animate pb-5">
-                    <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Services <i class="ion-ios-arrow-forward"></i></span></p>
-                    <h1 class="mb-3 bread">Our Services</h1>
-                </div>
-            </div>
+        <div class="hero-content">
+            <h1>Our Premium Services</h1>
+            <p>Explore the exceptional services we offer to enhance your car rental experience.</p>
         </div>
     </section>
 
     <!-- Services Section -->
     <section class="ftco-section">
         <div class="container">
-            <div class="row justify-content-center mb-5">
-                <div class="col-md-7 text-center heading-section ftco-animate">
-                    <span class="subheading">Services</span>
-                    <h2 class="mb-3">Our Premium Services</h2>
+            <span class="subheading">What We Offer</span>
+            <h2>Our Premium Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="icon"><span class="flaticon-route"></span></div>
+                    <h3>Wedding Ceremony</h3>
+                    <p>We provide full transportation services for your special day, ensuring timely and luxurious arrival for you and your guests.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon"><span class="flaticon-route"></span></div>
+                    <h3>City Transfer</h3>
+                    <p>Comfortable and reliable transportation within the city. Our professional drivers ensure you reach your destination on time.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon"><span class="flaticon-route"></span></div>
+                    <h3>Airport Transfer</h3>
+                    <p>Start or end your journey stress-free with our punctual airport transfer service available 24/7, with flight tracking.</p>
+                </div>
+                <div class="service-card">
+                    <div class="icon"><span class="flaticon-route"></span></div>
+                    <h3>Whole City Tour</h3>
+                    <p>Explore the city with our guided tour packages. Visit all major attractions with a knowledgeable local guide.</p>
                 </div>
             </div>
-            
-            <div class="row">
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <i class="flaticon-route"></i>
-                        </div>
-                        <h3 class="service-title text-center">Wedding Ceremony</h3>
-                        <p class="service-text text-center">We provide full transportation services for your special day, ensuring timely and luxurious arrival for you and your guests.</p>
-                    </div>
-                </div>
-                
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <i class="flaticon-route"></i>
-                        </div>
-                        <h3 class="service-title text-center">City Transfer</h3>
-                        <p class="service-text text-center">Comfortable and reliable transportation within the city. Our professional drivers ensure you reach your destination on time.</p>
-                    </div>
-                </div>
-                
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <i class="flaticon-route"></i>
-                        </div>
-                        <h3 class="service-title text-center">Airport Transfer</h3>
-                        <p class="service-text text-center">Start or end your journey stress-free with our punctual airport transfer service available 24/7, with flight tracking.</p>
-                    </div>
-                </div>
-                
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="service-card">
-                        <div class="service-icon">
-                            <i class="flaticon-route"></i>
-                        </div>
-                        <h3 class="service-title text-center">Whole City Tour</h3>
-                        <p class="service-text text-center">Explore the city with our guided tour packages. Visit all major attractions with a knowledgeable local guide.</p>
-                    </div>
-                </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="{% url 'car' %}" class="btn">Explore Our Services</a>
             </div>
         </div>
     </section>
 
-    <script>
-        // Add animation class to elements when they come into view
-        document.addEventListener('DOMContentLoaded', function() {
-            const animateElements = document.querySelectorAll('.ftco-animate');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('fadeInUp');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
-            
-            animateElements.forEach(element => {
-                observer.observe(element);
-            });
-            
-            // Set proper height for hero section
-            const heroSection = document.querySelector('.js-fullheight');
-            heroSection.style.height = window.innerHeight + 'px';
-            
-            window.addEventListener('resize', function() {
-                heroSection.style.height = window.innerHeight + 'px';
-            });
-        });
-    </script>
+    <!-- About Section -->
+    <section class="ftco-section about-section">
+        <div class="about-img"></div>
+        <div class="about-text">
+            <span class="subheading">About Us</span>
+            <h2>Welcome to LuxeDrive</h2>
+            <p>LuxeDrive is dedicated to providing top-tier car rental services with a focus on quality and customer satisfaction. Our premium services are designed to meet your every need.</p>
+            <p><a href="{% url 'about' %}" class="btn">Learn More About Us</a></p>
+        </div>
+    </section>
+
+    <!-- Counter Section -->
+    <section class="ftco-section">
+        <div class="container">
+            <h2>Our Achievements</h2>
+            <div class="counter-grid">
+                <div class="counter-item">
+                    <strong class="number" data-number="60">0</strong>
+                    <span>Years Experienced</span>
+                </div>
+                <div class="counter-item">
+                    <strong class="number" data-number="1090">0</strong>
+                    <span>Total Cars</span>
+                </div>
+                <div class="counter-item">
+                    <strong class="number" data-number="2590">0</strong>
+                    <span>Happy Customers</span>
+                </div>
+                <div class="counter-item">
+                    <strong class="number" data-number="67">0</strong>
+                    <span>Total Branches</span>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
 {% endblock %}

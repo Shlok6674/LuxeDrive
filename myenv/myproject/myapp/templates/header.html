@@ -1,127 +1,243 @@
 {% load static %}
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>JoyRide </title>
+    <title>LuxeDrive</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
 
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <!-- Existing CSS Files -->
     <link rel="stylesheet" href="{% static 'css/open-iconic-bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/animate.css' %}">
-    
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
-
     <link rel="stylesheet" href="{% static 'css/aos.css' %}">
-
     <link rel="stylesheet" href="{% static 'css/ionicons.min.css' %}">
-
     <link rel="stylesheet" href="{% static 'css/bootstrap-datepicker.css' %}">
     <link rel="stylesheet" href="{% static 'css/jquery.timepicker.css' %}">
-
-    
     <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
     <link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  </head>
-  <body>
-    
-	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-	    <div class="container">
-	      <a class="navbar-brand" href="{% url 'index' %}">Luxe<span>Drive</span></a>
-	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="oi oi-menu"></span> Menu
-	      </button>
 
-	      <div class="collapse navbar-collapse" id="ftco-nav">
-	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item active"><a href="{% url 'index' %}" class="nav-link">Home</a></li>
-	          <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="{% url 'services' %}" class="nav-link">Services</a></li>
-	          <li class="nav-item"><a href="{% url 'pricing' %}" class="nav-link">Pricing</a></li>
-	          <li class="nav-item"><a href="{% url 'car' %}" class="nav-link">Cars</a></li>
-	          <li class="nav-item"><a href="{% url 'blog' %}" class="nav-link">Blog</a></li>
-            <li class="nav-item"><a href="{% url 'myorder' %}" class="nav-link">Myorder</a></li>
-            {% if request.session.email %}
-            <li class="nav-item"><a href="{% url 'cpass' %}" class="nav-link">Change Password</a></li>
-            <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
-            
-            <a href="{% url 'uprofile' %}"><img src="{{request.session.profile}}" height="50px" width="50px" style="border-radius : 100px"></a> 
-            {% else %}
-	          <li class="nav-item"><a href="{% url 'signup' %}" class="nav-link">Signup</a></li>
-            <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
-            {% endif %}
-	        </ul>
-	      </div>
-	    </div>
-	  </nav>
+    <!-- Custom CSS -->
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #F5F5E8; /* Light cream */
+            color: #1A3C34; /* Deep teal */
+        }
+
+        /* Navbar */
+        .ftco_navbar {
+            position: fixed; /* Fixed to stay on top */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            transition: background 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+        }
+        .ftco_navbar.transparent {
+            background: transparent !important; /* Semi-transparent deep teal */
+            box-shadow: none;
+        }
+        .ftco_navbar.solid {
+            background: #1A3C34 !important; /* Deep teal when scrolled */
+            box-shadow: 0 2px 10px rgba(26, 60, 52, 0.2);
+        }
+        .navbar-brand {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            color: #D4A017 !important; /* Soft gold */
+            text-transform: uppercase;
+        }
+        .navbar-brand span {
+            color: #F5F5E8 !important; /* Light cream */
+        }
+        .nav-link {
+            color: #FFFFFF !important; /* White - enforced all the time */
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #D4A017 !important; /* Soft gold on hover/active */
+        }
+        /* Override any Bootstrap or external CSS with higher specificity */
+        .navbar-dark .navbar-nav .nav-link,
+        .ftco-navbar-light .navbar-nav .nav-link {
+            color: #FFFFFF !important;
+        }
+        .navbar-dark .navbar-nav .nav-link:hover,
+        .ftco-navbar-light .navbar-nav .nav-link:hover,
+        .navbar-dark .navbar-nav .nav-link.active,
+        .ftco-navbar-light .navbar-nav .nav-link.active {
+            color: #D4A017 !important;
+        }
+        .navbar-toggler {
+            border: none;
+            color: #F5F5E8 !important; /* Light cream */
+        }
+        .navbar-toggler .oi-menu {
+            color: #F5F5E8 !important; /* Light cream */
+        }
+
+        /* Profile Image */
+        .nav-item img {
+            border: 2px solid #D4A017; /* Soft gold */
+            transition: transform 0.3s ease;
+        }
+        .nav-item img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        .ftco-footer {
+            background: #1A3C34 !important; /* Deep teal */
+            color: #F5F5E8; /* Light cream */
+            padding: 60px 0;
+        }
+        .ftco-footer h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            color: #D4A017; /* Soft gold */
+        }
+        .ftco-footer a {
+            color: #F5F5E8; /* Light cream */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .ftco-footer a:hover {
+            color: #D4A017; /* Soft gold */
+        }
+        .ftco-footer-social li a {
+            color: #F5F5E8; /* Light cream */
+            font-size: 20px;
+            transition: color 0.3s ease;
+        }
+        .ftco-footer-social li a:hover {
+            color: #D4A017; /* Soft gold */
+        }
+        .ftco-footer .icon {
+            color: #D4A017; /* Soft gold */
+            margin-right: 10px;
+        }
+
+        /* Loader */
+        #ftco-loader {
+            background: #F5F5E8; /* Light cream */
+        }
+        #ftco-loader .path {
+            stroke: #D4A017 !important; /* Soft gold */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}">Luxe<span>Drive</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+            </button>
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active"><a href="{% url 'index' %}" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="{% url 'about' %}" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="{% url 'services' %}" class="nav-link">Services</a></li>
+                    <li class="nav-item"><a href="{% url 'pricing' %}" class="nav-link">Pricing</a></li>
+                    <li class="nav-item"><a href="{% url 'car' %}" class="nav-link">Cars</a></li>
+                    <li class="nav-item"><a href="{% url 'blog' %}" class="nav-link">Blog</a></li>
+                    <li class="nav-item"><a href="{% url 'myorder' %}" class="nav-link">Myorder</a></li>
+                    {% if request.session.email %}
+                        <li class="nav-item"><a href="{% url 'cpass' %}" class="nav-link">Change Password</a></li>
+                        <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                        <li class="nav-item">
+                            <a href="{% url 'uprofile' %}">
+                                <img src="{{ request.session.profile }}" height="50px" width="50px" style="border-radius: 100px;">
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a href="{% url 'signup' %}" class="nav-link">Signup</a></li>
+                        <li class="nav-item"><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
     <!-- END nav -->
 
-    {% block content%}
+    {% block content %}
     {% endblock %}
+
+    <!-- Footer -->
     <footer class="ftco-footer ftco-bg-dark ftco-section">
         <div class="container">
-          <div class="row mb-5">
-            <div class="col-md">
-              <div class="ftco-footer-widget mb-4">
-                <h2 class="ftco-heading-2"><a href="#" class="logo">Luxe<span>Drive</span></a></h2>
-                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-                  <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-                  <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-                  <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
-                </ul>
-              </div>
+            <div class="row mb-5">
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2"><a href="#" class="logo">Luxe<span>Drive</span></a></h2>
+                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                        <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+                            <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+                            <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+                            <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4 ml-md-5">
+                        <h2 class="ftco-heading-2">Information</h2>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="py-2 d-block">About</a></li>
+                            <li><a href="#" class="py-2 d-block">Services</a></li>
+                            <li><a href="#" class="py-2 d-block">Term and Conditions</a></li>
+                            <li><a href="#" class="py-2 d-block">Best Price Guarantee</a></li>
+                            <li><a href="#" class="py-2 d-block">Privacy & Cookies Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2">Customer Support</h2>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="py-2 d-block">FAQ</a></li>
+                            <li><a href="#" class="py-2 d-block">Payment Option</a></li>
+                            <li><a href="#" class="py-2 d-block">Booking Tips</a></li>
+                            <li><a href="#" class="py-2 d-block">How it works</a></li>
+                            <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="ftco-footer-widget mb-4">
+                        <h2 class="ftco-heading-2">Have a Questions?</h2>
+                        <div class="block-23 mb-3">
+                            <ul>
+                                <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+                                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+                                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md">
-              <div class="ftco-footer-widget mb-4 ml-md-5">
-                <h2 class="ftco-heading-2">Information</h2>
-                <ul class="list-unstyled">
-                  <li><a href="#" class="py-2 d-block">About</a></li>
-                  <li><a href="#" class="py-2 d-block">Services</a></li>
-                  <li><a href="#" class="py-2 d-block">Term and Conditions</a></li>
-                  <li><a href="#" class="py-2 d-block">Best Price Guarantee</a></li>
-                  <li><a href="#" class="py-2 d-block">Privacy &amp; Cookies Policy</a></li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-md">
-               <div class="ftco-footer-widget mb-4">
-                <h2 class="ftco-heading-2">Customer Support</h2>
-                <ul class="list-unstyled">
-                  <li><a href="#" class="py-2 d-block">FAQ</a></li>
-                  <li><a href="#" class="py-2 d-block">Payment Option</a></li>
-                  <li><a href="#" class="py-2 d-block">Booking Tips</a></li>
-                  <li><a href="#" class="py-2 d-block">How it works</a></li>
-                  <li><a href="#" class="py-2 d-block">Contact Us</a></li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-md">
-              <div class="ftco-footer-widget mb-4">
-                  <h2 class="ftco-heading-2">Have a Questions?</h2>
-                  <div class="block-23 mb-3">
-                    <ul>
-                      <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-                      <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-                      <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
-                    </ul>
-                  </div>
-              </div>
-            </div>
-          </div>
-          
         </div>
-      </footer>
-      
-    
-  
-    <!-- loader -->
-    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-  
-  
+    </footer>
+
+    <!-- Loader -->
+    <div id="ftco-loader" class="show fullscreen">
+        <svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#E8ECE5"/>
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#D4A017"/>
+        </svg>
+    </div>
+
+    <!-- Scripts -->
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/jquery-migrate-3.0.1.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
@@ -139,3 +255,29 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
     <script src="{% static 'js/google-map.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+
+    <!-- Scroll Behavior for Transparent Navbar -->
+    <script>
+        $(document).ready(function() {
+            const navbar = $('#ftco-navbar');
+            const heroHeight = $('.hero').outerHeight();
+
+            function checkScroll() {
+                if ($(window).scrollTop() < heroHeight) {
+                    navbar.addClass('transparent').removeClass('solid');
+                } else {
+                    navbar.addClass('solid').removeClass('transparent');
+                }
+            }
+
+            // Initial check
+            checkScroll();
+
+            // Check on scroll
+            $(window).scroll(function() {
+                checkScroll();
+            });
+        });
+    </script>
+</body>
+</html>
