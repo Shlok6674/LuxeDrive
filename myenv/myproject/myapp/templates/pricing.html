@@ -1,75 +1,552 @@
 {% extends 'header.html' %}
 {% load static %}
+
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
-  <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{% static 'images/bg_3.jpg' %}');" data-stellar-background-ratio="0.5">
-    <div class="overlay"></div>
-    <div class="container">
-      <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
-        <div class="col-md-9 ftco-animate pb-5">
-          <p class="breadcrumbs"><span class="mr-2"><a href="{% url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Pricing <i class="ion-ios-arrow-forward"></i></span></p>
-          <h1 class="mb-3 bread">Pricing</h1>
-        </div>
-      </div>
-    </div>
-  </section>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #F5F5E8; /* Light cream from index.html */
+            color: #1A3C34; /* Deep teal from index.html */
+            line-height: 1.6;
+        }
 
-  <section class="ftco-section ftco-cart">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 ftco-animate">
-          <div class="car-list">
-            <table class="table">
-              <thead class="thead-primary">
-                <tr class="text-center">
-                  <th>&nbsp;</th>
-                  <th>&nbsp;</th>
-                  <th class="bg-dark heading">Per Day Rate</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for i in car %}
-                <tr class="">
-                  <td class="car-image"><div class="img" style="background-image:url('{{ i.cimage.url }}');"></div></td>
-                  <td class="product-name">
-                    <h3>{{ i.cname }}</h3>
-                    <p class="mb-0 rated">
-                      <span>rated:</span>
-                      <span class="ion-ios-star"></span>
-                      <span class="ion-ios-star"></span>
-                      <span class="ion-ios-star"></span>
-                      <span class="ion-ios-star"></span>
-                      <span class="ion-ios-star"></span>
-                    </p>
-                  </td>
-                  <td class="price">
-                    <p class="btn-custom"><a href="{% url 'cart' i.pk %}">Rent a car</a></p>
-                    <div class="price-rate">
-                      <h3>
-                        <span class="num"><small class="currency">₹</small> {{ i.cprice }}</span>
-                        <span class="per">/per day</span>
-                      </h3>
-                    </div>
-                  </td>
-                </tr>
-                {% empty %}
-                <tr>
-                  <td colspan="3" class="text-center py-5">
-                    <div class="empty-state">
-                      <i class="bi bi-car-front display-1 text-muted"></i>
-                      <h3 class="mt-3">No cars available</h3>
-                      <p class="text-muted">Please check back later.</p>
-                    </div>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+        /* Hero Section */
+        .hero-wrap {
+            position: relative;
+            height: 300px;
+            background-image: url('{% static 'images/bg_3.jpg' %}');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.7);
+        }
+        .hero-wrap .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 60, 52, 0.4); /* Teal overlay from index.html */
+        }
+        .hero-wrap .slider-text {
+            height: 300px;
+            color: #F5F5E8; /* Light cream */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            flex-direction: column;
+            text-align: center;
+        }
+        .hero-wrap .breadcrumbs {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hero-wrap .breadcrumbs a {
+            color: #D4A017; /* Soft gold from index.html */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .hero-wrap .breadcrumbs a:hover {
+            color: #F5F5E8; /* Light cream */
+        }
+        .hero-wrap .bread {
+            font-family: 'Cinzel', serif; /* From index.html */
+            font-size: 48px;
+            font-weight: 700;
+            color: #D4A017; /* Soft gold */
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Container and Table Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .mt-5 {
+            margin-top: 5rem;
+        }
+        .car-list {
+            background: #E8ECE5; /* Slightly darker cream from index.html */
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(26, 60, 52, 0.1);
+            padding: 30px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .thead-primary th {
+            background: #1A3C34; /* Deep teal from index.html */
+            color: #F5F5E8; /* Light cream */
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .car-image .img {
+            width: 180px;
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .car-image .img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        td {
+            padding: 25px;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(163, 181, 168, 0.3); /* Muted teal */
+        }
+        .product-name h3 {
+            font-size: 1.4rem;
+            color: #D4A017; /* Soft gold from index.html */
+            font-family: 'Cinzel', serif;
+            margin: 0;
+        }
+        .price-rate h3 {
+            font-size: 1.3rem;
+            color: #1A3C34; /* Deep teal */
+            margin: 0;
+            font-weight: 500;
+        }
+        .price-rate .currency {
+            font-size: 1rem;
+            color: #A3B5A8; /* Muted teal from index.html */
+        }
+        .price-rate .per {
+            font-size: 1rem;
+            color: #A3B5A8; /* Muted teal */
+            font-style: italic;
+        }
+        
+        /* Fix for price column hover - prevent color changes */
+        .price-rate:hover h3,
+        .price-rate:hover .currency,
+        .price-rate:hover .per,
+        td.price:hover .price-rate h3,
+        td.price:hover .price-rate .currency,
+        td.price:hover .price-rate .per,
+        tr:hover .price-rate h3,
+        tr:hover .price-rate .currency,
+        tr:hover .price-rate .per {
+            color: inherit !important; /* Forces the color to remain unchanged */
+        }
+        
+        .actions .btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .actions .btn-success {
+            background: #D4A017; /* Soft gold from index.html */
+            border: none;
+            color: #1A3C34; /* Deep teal */
+        }
+        .actions .btn-success:hover {
+            background: #1A3C34; /* Deep teal */
+            color: #F5F5E8; /* Light cream */
+            transform: translateY(-2px);
+        }
+        .actions .btn-outline-secondary {
+            border: 1px solid #D4A017; /* Soft gold */
+            color: #D4A017;
+        }
+        .actions .btn-outline-secondary:hover {
+            background: #D4A017; /* Soft gold */
+            color: #1A3C34; /* Deep teal */
+            transform: translateY(-2px);
+        }
+
+        /* Popup Styling */
+        .car-details-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #E8ECE5; /* Slightly darker cream */
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            max-width: 450px;
+            width: 90%;
+            padding: 30px;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+        .popup-content {
+            text-align: center;
+        }
+        .popup-image {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .car-details-popup h4 {
+            font-size: 1.8rem;
+            color: #D4A017; /* Soft gold */
+            font-family: 'Cinzel', serif;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .car-details-popup .price {
+            font-size: 1.4rem;
+            color: #1A3C34; /* Deep teal */
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .car-details-popup .desc {
+            font-size: 1.1rem;
+            color: #A3B5A8; /* Muted teal */
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .car-details-popup .btn {
+            padding: 12px 25px;
+            background: #D4A017; /* Soft gold */
+            border: none;
+            border-radius: 25px;
+            color: #1A3C34; /* Deep teal */
+            transition: all 0.3s ease;
+        }
+        .car-details-popup .btn:hover {
+            background: #1A3C34; /* Deep teal */
+            color: #F5F5E8; /* Light cream */
+            transform: translateY(-2px);
+        }
+
+        /* Pagination Styling */
+        .block-27 {
+            margin: 3rem 0;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .pagination li {
+            list-style: none;
+        }
+        .pagination li a, 
+        .pagination li span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        .pagination li a {
+            color: #1A3C34; /* Deep teal */
+            background: #E8ECE5; /* Slightly darker cream */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .pagination li a:hover {
+            background: #D4A017; /* Soft gold */
+            color: #F5F5E8; /* Light cream */
+            transform: translateY(-2px);
+        }
+        .pagination .active span {
+            background: #D4A017; /* Soft gold */
+            color: #F5F5E8; /* Light cream */
+            box-shadow: 0 5px 15px rgba(212, 160, 23, 0.3);
+        }
+
+        /* Empty State Styling */
+        .empty-state {
+            padding: 3rem 0;
+            color: #A3B5A8; /* Muted teal */
+        }
+        .empty-state i {
+            font-size: 60px;
+        }
+        .empty-state h3 {
+            font-family: 'Cinzel', serif;
+            color: #1A3C34; /* Deep teal */
+            margin: 20px 0;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #D4A017; /* Soft gold */
+            color: #F5F5E8; /* Light cream */
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .back-to-top:hover {
+            background: #1A3C34; /* Deep teal */
+            transform: translateY(-5px);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 767.98px) {
+            .hero-wrap {
+                height: 200px;
+            }
+            .hero-wrap .slider-text {
+                height: 200px;
+            }
+            .hero-wrap .bread {
+                font-size: 36px;
+            }
+            .car-image .img {
+                width: 120px;
+                height: 80px;
+            }
+            .car-details-popup {
+                width: 85%;
+                padding: 20px;
+            }
+            .popup-image {
+                height: 180px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body>
+    <section class="hero-wrap hero-wrap-2 js-fullheight" data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="slider-text js-fullheight">
+                <p class="breadcrumbs">
+                    <span class="mr-2"><a href="{% url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span> 
+                    <span>Cars <i class="ion-ios-arrow-forward"></i></span>
+                </p>
+                <h1 class="bread">Choose Your Car</h1>
+            </div>
         </div>
-      </div>
+    </section>
+
+    <div class="container mt-5">
+        <div class="car-list">
+            <table class="table">
+                <thead class="thead-primary">
+                    <tr class="text-center">
+                        <th>Image</th>
+                        <th>Car Name</th>
+                        <th>Price Per Day</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in car %}
+                    <tr class="text-center">
+                        <td class="car-image">
+                            <div class="img" 
+                                 style="background-image:url('{{ i.cimage.url }}');"
+                                 data-car-name="{{ i.cname }}"
+                                 data-car-price="{{ i.cprice }}"
+                                 data-car-desc="A premium vehicle offering comfort and style for your journey"></div>
+                        </td>
+                        <td class="product-name">
+                            <h3>{{ i.cname }}</h3>
+                        </td>
+                        <td class="price">
+                            <div class="price-rate">
+                                <h3>
+                                    <span class="num"><small class="currency">₹</small> {{ i.cprice }}</span>
+                                    <span class="per">/per day</span>
+                                </h3>
+                            </div>
+                        </td>
+                        <td class="actions">
+                            <a href="{% url 'cart' i.pk %}" class="btn btn-success btn-sm mx-1">Book Now</a>
+                            <a href="{% url 'details' i.pk %}" class="btn btn-outline-secondary btn-sm mx-1">Details</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-5">
+                            <div class="empty-state">
+                                <i class="bi bi-car-front display-1"></i>
+                                <h3>No cars available</h3>
+                                <p>Try adjusting your search criteria or check back later.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col text-center">
+                <div class="block-27">
+                    <ul class="pagination">
+                        <li><a href="#"><i class="bi bi-chevron-left"></i></a></li>
+                        <li class="active"><span>1</span></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Single Popup Container -->
+        <div class="car-details-popup" id="carPopup">
+            <div class="popup-content">
+                <div class="popup-image" id="popupImage"></div>
+                <h4 id="popupName"></h4>
+                <p class="price" id="popupPrice"></p>
+                <p class="desc" id="popupDesc"></p>
+                <a href="#" class="btn btn-primary btn-sm" id="popupDetailsLink">More Details</a>
+            </div>
+        </div>
     </div>
-  </section>
+
+    <!-- Inline JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initParallax();
+            initPopup();
+            initPagination();
+            addBackToTopButton();
+        });
+
+        function initParallax() {
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const parallaxElements = document.querySelectorAll('[data-stellar-background-ratio]');
+                
+                parallaxElements.forEach(element => {
+                    const speed = parseFloat(element.getAttribute('data-stellar-background-ratio')) || 0.5;
+                    const yPos = -(scrollTop * speed);
+                    element.style.backgroundPosition = '50% ' + yPos + 'px';
+                });
+            });
+        }
+
+        function initPopup() {
+            const carImages = document.querySelectorAll('.car-image .img');
+            const popup = document.getElementById('carPopup');
+            const popupImage = document.getElementById('popupImage');
+            const popupName = document.getElementById('popupName');
+            const popupPrice = document.getElementById('popupPrice');
+            const popupDesc = document.getElementById('popupDesc');
+            const popupDetailsLink = document.getElementById('popupDetailsLink');
+
+            let timeoutId;
+
+            carImages.forEach(image => {
+                image.addEventListener('mouseenter', function() {
+                    clearTimeout(timeoutId);
+                    
+                    const carName = this.getAttribute('data-car-name');
+                    const carPrice = this.getAttribute('data-car-price');
+                    const carDesc = this.getAttribute('data-car-desc');
+                    const detailsUrl = this.closest('tr').querySelector('.actions a:last-child').getAttribute('href');
+                    
+                    popupImage.style.backgroundImage = this.style.backgroundImage;
+                    popupName.textContent = carName;
+                    popupPrice.textContent = `₹${carPrice} / day`;
+                    popupDesc.textContent = carDesc;
+                    popupDetailsLink.setAttribute('href', detailsUrl);
+                    
+                    popup.style.display = 'block';
+                });
+
+                image.addEventListener('mouseleave', function() {
+                    timeoutId = setTimeout(() => {
+                        if (!popup.matches(':hover')) {
+                            popup.style.display = 'none';
+                        }
+                    }, 200);
+                });
+            });
+
+            popup.addEventListener('mouseenter', function() {
+                clearTimeout(timeoutId);
+            });
+
+            popup.addEventListener('mouseleave', function() {
+                popup.style.display = 'none';
+            });
+        }
+
+        function initPagination() {
+            const paginationLinks = document.querySelectorAll('.pagination li a');
+            
+            paginationLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    document.querySelectorAll('.pagination li').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.parentNode.classList.add('active');
+                    if (this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+                });
+            });
+        }
+
+        function addBackToTopButton() {
+            const backToTopBtn = document.createElement('button');
+            backToTopBtn.innerHTML = '<i class="bi bi-arrow-up"></i>';
+            backToTopBtn.classList.add('back-to-top');
+            document.body.appendChild(backToTopBtn);
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.style.display = 'block';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+            
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+    </script>
+</body>
 </html>
 {% endblock %}
