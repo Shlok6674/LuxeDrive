@@ -2,487 +2,444 @@
 {% load static %}
 
 {% block content %}
-<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{% static 'images/bg_3.jpg' %}');" data-stellar-background-ratio="0.5">
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
-            <div class="col-md-9 ftco-animate pb-5">
-                <p class="breadcrumbs">
-                    <span class="mr-2"><a href="{% url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span> 
-                    <span>Cars <i class="ion-ios-arrow-forward"></i></span>
-                </p>
-                <h1 class="mb-3 bread">Choose Your Car</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #F5F5E8; /* Light cream */
+            color: #1A3C34; /* Deep teal */
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 400px;
+            background-image: url('{% static "images/bg_3.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .hero .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 60, 52, 0.5); /* Teal overlay */
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: #F5F5E8;
+        }
+        .hero-content h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 60px;
+            color: #D4A017; /* Soft gold */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+        }
+        .hero-content p {
+            font-size: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* General Section Styles */
+        section {
+            padding: 80px 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 36px;
+            color: #1A3C34; /* Deep teal */
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .subheading {
+            font-size: 14px;
+            color: #D4A017; /* Soft gold */
+            text-transform: uppercase;
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* Search bar styling */
+        .search-form {
+            margin-bottom: 40px;
+        }
+        .search-form .input-group {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 25px;
+            overflow: hidden;
+        }
+        .search-form .form-control {
+            border: none;
+            border-radius: 25px 0 0 25px;
+            padding: 15px 20px;
+            font-size: 16px;
+        }
+        .search-form .btn {
+            border-radius: 0 25px 25px 0;
+            padding: 15px 25px;
+            font-size: 16px;
+        }
+
+        /* Car card styling */
+        .car-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            justify-content: center;
+            max-height: auto; /* Remove fixed height to avoid cutting off */
+        }
+        .car-card {
+            background: #E8ECE5; /* Slightly darker cream */
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .car-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .car-image {
+            width: 100%; /* Ensure the image takes full width */
+            height: auto; /* Allow natural height based on aspect ratio */
+            background-size: contain; /* Use 'contain' to preserve the entire image */
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            min-height: 200px; /* Minimum height to ensure visibility */
+        }
+        .car-image::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .car-card:hover .car-image::after {
+            opacity: 1;
+        }
+        .car-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .car-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .car-title a {
+            color: #1A3C34;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .car-title a:hover {
+            color: #D4A017;
+        }
+        .car-price {
+            font-size: 1.2rem;
+            color: #1A3C34;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+        .car-price span {
+            font-size: 0.9rem;
+            color: #A3B5A8;
+            font-weight: 400;
+        }
+        .car-actions .btn {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .car-actions .btn-success {
+            background: #D4A017;
+            color: #1A3C34;
+            border: none;
+        }
+        .car-actions .btn-success:hover {
+            background: #1A3C34;
+            color: #F5F5E8;
+        }
+        .car-actions .btn-outline-secondary {
+            border: 1px solid #D4A017;
+            color: #D4A017;
+            background: transparent;
+        }
+        .car-actions .btn-outline-secondary:hover {
+            background: #D4A017;
+            color: #1A3C34;
+        }
+
+        /* Pagination styling */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+        .pagination li {
+            list-style: none;
+        }
+        .pagination li a, .pagination li span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #E8ECE5;
+            color: #1A3C34;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .pagination li a:hover {
+            background: #D4A017;
+            color: #F5F5E8;
+        }
+        .pagination .active span {
+            background: #D4A017;
+            color: #F5F5E8;
+        }
+
+        /* Empty state styling */
+        .empty-state {
+            text-align: center;
+            padding: 50px 0;
+            color: #A3B5A8;
+        }
+        .empty-state i {
+            font-size: 60px;
+        }
+        .empty-state h3 {
+            font-family: 'Cinzel', serif;
+            color: #1A3C34;
+            margin: 20px 0;
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #D4A017;
+            color: #F5F5E8;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+        .back-to-top:hover {
+            background-color: #1A3C34;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 991.98px) {
+            .car-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 767.98px) {
+            .hero {
+                height: 250px;
+            }
+            .hero-content h1 {
+                font-size: 40px;
+            }
+            .hero-content p {
+                font-size: 16px;
+            }
+            .car-grid {
+                grid-template-columns: 1fr;
+            }
+            .car-image {
+                min-height: 180px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>Explore Your Ride</h1>
+            <p>Discover the perfect vehicle for your journey with our wide selection of cars.</p>
+        </div>
+    </section>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <form class="search-form" method="GET" action="{% url 'car' %}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" 
+                               placeholder="Search vehicles..." aria-label="Search vehicles" 
+                               value="{{ request.GET.q }}" name="q">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-</section>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-6 col-md-8">
-            <form class="search-form" method="GET" action="{% url 'car' %}">
-                <div class="input-group">
-                    <input type="text" class="form-control form-control-lg rounded-pill-start" 
-                           placeholder="Search vehicles..." aria-label="Search vehicles" 
-                           value="{{ request.GET.q }}" name="q">
-                    <button class="btn btn-primary px-4 rounded-pill-end" type="submit">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="row mt-5">
-        {% for i in car %}
-        <div class="col-md-4 mb-4">
-            <div class="car-card shadow-lg rounded overflow-hidden">
-                <div class="car-image" style="background-image: url('{{ i.cimage.url }}');">
-                </div>
-                <div class="car-content p-4">
-                    <h4 class="car-title"><a href="{% url 'details' i.pk %}">{{ i.cname }}</a></h4>
-                    <span class="car-category text-muted">{{ i.cname }}</span>
-                    <p class="car-price text-primary font-weight-bold mt-2">₹{{ i.cprice }} <span class="text-muted">/ day</span></p>
-                    <div class="d-flex justify-content-between mt-3">
-                        <a href="{% url 'cart' i.pk %}" class="btn btn-success px-3">Book Now</a>
-                        <a href="{% url 'details' i.pk %}" class="btn btn-outline-secondary px-3">View Details</a>
+        <div class="row justify-content-center mt-5">
+            <div class="car-grid">
+                {% for i in car|slice:":6" %} <!-- Limit to first 6 cars for 2 rows -->
+                <div class="car-card">
+                    <div class="car-image" style="background-image: url('{{ i.cimage.url }}');"></div>
+                    <div class="car-content">
+                        <h4 class="car-title"><a href="{% url 'details' i.pk %}">{{ i.cname }}</a></h4>
+                        <p class="car-price">₹{{ i.cprice }} <span>/ day</span></p>
+                        <div class="car-actions">
+                            <a href="{% url 'cart' i.pk %}" class="btn btn-success">Book Now</a>
+                            <a href="{% url 'details' i.pk %}" class="btn btn-outline-secondary">View Details</a>
+                        </div>
                     </div>
                 </div>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="bi bi-car-front"></i>
+                    <h3>No cars available</h3>
+                    <p>Try adjusting your search criteria or check back later.</p>
+                </div>
+                {% endfor %}
             </div>
         </div>
-        {% empty %}
-        <div class="col-12 text-center py-5">
-            <div class="empty-state">
-                <i class="bi bi-car-front display-1 text-muted"></i>
-                <h3 class="mt-3">No cars available</h3>
-                <p class="text-muted">Try adjusting your search criteria or check back later.</p>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
 
-    <div class="row mt-5">
-        <div class="col text-center">
-            <div class="block-27">
+        <div class="row">
+            <div class="col text-center">
                 <ul class="pagination">
-                    <li><a href="#"><i class="bi bi-chevron-left"></i></a></li>
+                    <li><a href="?page=1"><i class="bi bi-chevron-left"></i></a></li>
                     <li class="active"><span>1</span></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#"><i class="bi bi-chevron-right"></i></a></li>
+                    <li><a href="?page=2">2</a></li>
+                    <li><a href="?page=3">3</a></li>
+                    <li><a href="?page=4">4</a></li>
+                    <li><a href="?page=5">5</a></li>
+                    <li><a href="?page=2"><i class="bi bi-chevron-right"></i></a></li>
                 </ul>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Inline CSS -->
-<style>
-/* Car Listing Page CSS */
+    <!-- Back to Top Button -->
+    <button class="back-to-top"><i class="bi bi-arrow-up"></i></button>
 
-/* Hero section styling */
-.hero-wrap {
-  position: relative;
-  height: 300px;
-  background-size: cover;
-  background-position: center center;
-}
+    <!-- Inline JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize parallax effect
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const hero = document.querySelector('.hero');
+                const speed = 0.5;
+                const yPos = -(scrollTop * speed);
+                hero.style.backgroundPositionY = yPos + 'px';
+            });
 
-.hero-wrap .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-}
+            // Initialize search functionality
+            const searchForm = document.querySelector('.search-form');
+            const searchInput = searchForm ? searchForm.querySelector('input[type="text"]') : null;
+            if (searchForm && searchInput) {
+                searchInput.addEventListener('focus', function() {
+                    if (this.value === this.getAttribute('placeholder')) {
+                        this.value = '';
+                    }
+                });
+                searchInput.addEventListener('blur', function() {
+                    if (this.value === '') {
+                        this.value = this.getAttribute('placeholder');
+                    }
+                });
+                searchForm.addEventListener('submit', function(e) {
+                    if (searchInput.value.trim() === '' || searchInput.value === searchInput.getAttribute('placeholder')) {
+                        e.preventDefault();
+                        searchInput.classList.add('is-invalid');
+                        setTimeout(() => {
+                            searchInput.classList.remove('is-invalid');
+                        }, 2000);
+                    }
+                });
+            }
 
-.hero-wrap .slider-text {
-  height: 300px;
-  color: #fff;
-}
+            // Initialize pagination
+            const paginationLinks = document.querySelectorAll('.pagination li a');
+            paginationLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    document.querySelectorAll('.pagination li').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.parentNode.classList.add('active');
+                });
+            });
 
-.hero-wrap .breadcrumbs {
-  font-size: 14px;
-}
+            // Add hover effects to car cards
+            const carCards = document.querySelectorAll('.car-card');
+            carCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.querySelector('.car-image').style.transform = 'scale(1.05)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.querySelector('.car-image').style.transform = 'scale(1)';
+                });
+            });
 
-.hero-wrap .breadcrumbs a {
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-}
-
-.hero-wrap .bread {
-  font-size: 32px;
-  font-weight: 700;
-  color: #fff;
-}
-
-/* Search bar styling */
-.search-form .input-group {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.rounded-pill-start {
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: 50px;
-  border-right: none;
-}
-
-.rounded-pill-end {
-  border-top-right-radius: 50px;
-  border-bottom-right-radius: 50px;
-  border-left: none;
-}
-
-/* Car card styling */
-.car-card {
-  background: #fff;
-  transition: all 0.3s ease;
-  border-radius: 12px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.car-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.car-image {
-  height: 200px;
-  background-size: cover;
-  background-position: center;
-  transition: 0.3s;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
-  overflow: hidden;
-  position: relative;
-}
-
-.car-image::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 30%;
-  background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.car-card:hover .car-image::after {
-  opacity: 1;
-}
-
-.car-content {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.car-title {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-}
-
-.car-title a {
-  text-decoration: none;
-  color: #343a40;
-  transition: color 0.2s;
-}
-
-.car-title a:hover {
-  color: #007bff;
-}
-
-.car-category {
-  font-size: 0.9rem;
-  color: #6c757d;
-  margin-bottom: 0.5rem;
-}
-
-.car-price {
-  font-size: 1.2rem;
-  color: #007bff;
-  font-weight: 600;
-  margin: 0.5rem 0 1rem;
-}
-
-.car-price span {
-  font-size: 0.9rem;
-  font-weight: 400;
-}
-
-/* Pagination styling */
-.block-27 {
-  margin: 2rem 0;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-}
-
-.pagination li {
-  list-style: none;
-}
-
-.pagination li a, 
-.pagination li span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.pagination li a {
-  color: #495057;
-  background: #f8f9fa;
-}
-
-.pagination li a:hover {
-  background: #e9ecef;
-  color: #007bff;
-}
-
-.pagination .active span {
-  background: #007bff;
-  color: white;
-}
-
-/* Empty state styling */
-.empty-state {
-  padding: 3rem 0;
-  color: #6c757d;
-}
-
-/* Back to top button */
-.back-to-top {
-  display: none;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 99;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-.back-to-top:hover {
-  background-color: #0069d9;
-}
-
-/* Responsive adjustments */
-@media (max-width: 767.98px) {
-  .car-card {
-    margin-bottom: 1.5rem;
-  }
-  
-  .hero-wrap {
-    height: 200px;
-  }
-  
-  .hero-wrap .slider-text {
-    height: 200px;
-  }
-  
-  .hero-wrap .bread {
-    font-size: 24px;
-  }
-}
-</style>
-
-<!-- Inline JavaScript -->
-<script>
-// Car Listing Page JavaScript
-
-// Initialize when document is ready
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize the parallax effect for the hero section
-  initParallax();
-  
-  // Initialize search functionality
-  initSearch();
-  
-  // Initialize pagination
-  initPagination();
-  
-  // Add hover effects to car cards
-  initCardHoverEffects();
-  
-  // Add back to top button
-  addBackToTopButton();
-});
-
-// Function to handle parallax effect for hero background
-function initParallax() {
-  window.addEventListener('scroll', function() {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const parallaxElements = document.querySelectorAll('[data-stellar-background-ratio]');
-    
-    parallaxElements.forEach(element => {
-      const speed = parseFloat(element.getAttribute('data-stellar-background-ratio')) || 0.5;
-      const yPos = -(scrollTop * speed);
-      element.style.backgroundPosition = '50% ' + yPos + 'px';
-    });
-  });
-}
-
-// Function to enhance search functionality
-function initSearch() {
-  const searchForm = document.querySelector('.search-form');
-  const searchInput = searchForm ? searchForm.querySelector('input[type="text"]') : null;
-  
-  if (searchForm && searchInput) {
-    // Clear input on focus
-    searchInput.addEventListener('focus', function() {
-      if (this.value === this.getAttribute('placeholder')) {
-        this.value = '';
-      }
-    });
-    
-    // Restore placeholder on blur if empty
-    searchInput.addEventListener('blur', function() {
-      if (this.value === '') {
-        this.value = this.getAttribute('placeholder');
-      }
-    });
-    
-    // Add search validation
-    searchForm.addEventListener('submit', function(e) {
-      if (searchInput.value.trim() === '' || searchInput.value === searchInput.getAttribute('placeholder')) {
-        e.preventDefault();
-        searchInput.classList.add('is-invalid');
-        setTimeout(() => {
-          searchInput.classList.remove('is-invalid');
-        }, 2000);
-      }
-    });
-  }
-}
-
-// Function to handle pagination
-function initPagination() {
-  const paginationLinks = document.querySelectorAll('.pagination li a');
-  
-  paginationLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      // Here you would typically handle the pagination logic
-      // For now, we're just adding a visual feedback
-      
-      // Remove active class from all links
-      document.querySelectorAll('.pagination li').forEach(item => {
-        item.classList.remove('active');
-      });
-      
-      // Add active class to clicked item's parent
-      this.parentNode.classList.add('active');
-      
-      // If this is just for demo/static purposes, prevent default
-      if (this.getAttribute('href') === '#') {
-        e.preventDefault();
-      }
-    });
-  });
-}
-
-// Function to add hover effects to car cards
-function initCardHoverEffects() {
-  const carCards = document.querySelectorAll('.car-card');
-  
-  carCards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
-      this.querySelector('.car-image').style.transform = 'scale(1.05)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-      this.querySelector('.car-image').style.transform = 'scale(1)';
-    });
-    
-    // Add click effect to buttons
-    const buttons = card.querySelectorAll('.btn');
-    buttons.forEach(button => {
-      button.addEventListener('mousedown', function() {
-        this.style.transform = 'scale(0.95)';
-      });
-      
-      button.addEventListener('mouseup', function() {
-        this.style.transform = 'scale(1)';
-      });
-      
-      button.addEventListener('mouseleave', function() {
-        this.style.transform = 'scale(1)';
-      });
-    });
-  });
-}
-
-// Function to add back to top button
-function addBackToTopButton() {
-  // Create the button
-  const backToTopBtn = document.createElement('button');
-  backToTopBtn.innerHTML = '<i class="bi bi-arrow-up"></i>';
-  backToTopBtn.classList.add('back-to-top');
-  document.body.appendChild(backToTopBtn);
-  
-  // Show/hide the button based on scroll position
-  window.addEventListener('scroll', function() {
-    if (window.pageYOffset > 300) {
-      backToTopBtn.style.display = 'block';
-    } else {
-      backToTopBtn.style.display = 'none';
-    }
-  });
-  
-  // Scroll to top when clicked
-  backToTopBtn.addEventListener('click', function() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
-
-// Function to handle smooth scrolling
-function smoothScroll(target, duration) {
-  const targetElement = document.querySelector(target);
-  const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-  const startPosition = window.pageYOffset;
-  const distance = targetPosition - startPosition;
-  let startTime = null;
-
-  function animation(currentTime) {
-    if (startTime === null) startTime = currentTime;
-    const timeElapsed = currentTime - startTime;
-    const run = ease(timeElapsed, startPosition, distance, duration);
-    window.scrollTo(0, run);
-    if (timeElapsed < duration) requestAnimationFrame(animation);
-  }
-
-  function ease(t, b, c, d) {
-    t /= d / 2;
-    if (t < 1) return c / 2 * t * t + b;
-    t--;
-    return -c / 2 * (t * (t - 2) - 1) + b;
-  }
-
-  requestAnimationFrame(animation);
-}
-</script>
-
-<!-- Include Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+            // Add back to top button functionality
+            const backToTopBtn = document.querySelector('.back-to-top');
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.style.display = 'block';
+                } else {
+                    backToTopBtn.style.display = 'none';
+                }
+            });
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
 {% endblock %}
