@@ -1,7 +1,8 @@
 {% load static %}
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>JoyRide </title>
+    <title>JoyRide</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -26,8 +27,87 @@
     <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
     <link rel="stylesheet" href="{% static 'css/icomoon.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  </head>
-  <body>
+
+    <!-- Custom CSS -->
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #F5F5E8;
+            color: #1A3C34;
+        }
+
+        /* Navbar */
+        .ftco_navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .ftco_navbar.transparent {
+            background: transparent !important;
+            box-shadow: none;
+        }
+        .ftco_navbar.solid {
+            background: #1A3C34 !important;
+            box-shadow: 0 2px 10px rgba(26, 60, 52, 0.2);
+        }
+        .navbar-brand {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            color: #D4A017 !important;
+            text-transform: uppercase;
+        }
+        .navbar-brand span {
+            color: #F5F5E8 !important;
+        }
+        .nav-link {
+            color: #FFFFFF !important;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #D4A017 !important;
+        }
+        .navbar-dark .navbar-nav .nav-link,
+        .ftco-navbar-light .navbar-nav .nav-link {
+            color: #FFFFFF !important;
+        }
+        .navbar-dark .navbar-nav .nav-link:hover,
+        .ftco-navbar-light .navbar-nav .nav-link:hover {
+            color: #D4A017 !important;
+        }
+        .nav-item img {
+            border: 2px solid #D4A017;
+            transition: transform 0.3s ease;
+        }
+        .nav-item img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Footer Styles */
+        .ftco-footer {
+            background: #1A3C34 !important;
+            color: #F5F5E8;
+            padding: 60px 0;
+        }
+        .ftco-footer h2 {
+            font-family: 'Cinzel', serif;
+            color: #D4A017;
+        }
+        .ftco-footer a {
+            color: #F5F5E8;
+            transition: color 0.3s ease;
+        }
+        .ftco-footer a:hover {
+            color: #D4A017;
+        }
+    </style>
+</head>
+<body>
     
 	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
@@ -139,4 +219,26 @@
     <script src="{% static 'js/google-map.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Scroll Behavior Script -->
+    <script>
+        $(document).ready(function() {
+            const navbar = $('#ftco-navbar');
+            const heroHeight = $('.hero').outerHeight();
+
+            function checkScroll() {
+                if ($(window).scrollTop() < heroHeight) {
+                    navbar.addClass('transparent').removeClass('solid');
+                } else {
+                    navbar.addClass('solid').removeClass('transparent');
+                }
+            }
+
+            checkScroll();
+            $(window).scroll(function() {
+                checkScroll();
+            });
+        });
+    </script>
 </body>
+</html>

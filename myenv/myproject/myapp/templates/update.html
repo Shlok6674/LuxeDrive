@@ -3,201 +3,268 @@
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
-<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{% static 'images/bg_3.jpg' %}');" data-stellar-background-ratio="0.5">
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
-            <div class="col-md-9 ftco-animate pb-5">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-transparent p-0">
-                        <li class="breadcrumb-item"><a href="{% url 'lindex' %}">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Update Car</li>
-                    </ol>
-                </nav>
-                <h1 class="mb-3 display-4 fw-bold text-white">Update Car</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Car</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #F5F5E8; /* Light cream */
+            color: #1A3C34; /* Deep teal */
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            background-image: url('{% static 'images/bg_3.jpg' %}');
+            background-size: cover;
+            background-position: center;
+        }
+        .hero .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Adjusted overlay for contrast */
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+        .hero-content h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 48px;
+            color: #D4A017; /* Soft gold */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Breadcrumbs */
+        .breadcrumbs {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 20px;
+            z-index: 2;
+        }
+        .breadcrumbs a {
+            color: #F5F5E8; /* Light cream */
+            text-decoration: none;
+            font-size: 16px;
+            margin: 0 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .breadcrumbs a:hover {
+            color: #D4A017; /* Soft gold */
+        }
+        .breadcrumbs span {
+            color: #A3B5A8; /* Muted teal */
+            font-size: 16px;
+            margin: 0 5px;
+        }
+
+        /* Main Content */
+        .ftco-section {
+            padding: 100px 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Alerts */
+        .alert {
+            background: #E8ECE5; /* Slightly darker cream */
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            color: #1A3C34; /* Deep teal */
+            border: 1px solid #A3B5A8; /* Muted teal */
+        }
+        .alert-danger {
+            background: #D4A017; /* Soft gold */
+            color: #1A3C34;
+        }
+        .alert .btn-close {
+            color: #1A3C34;
+            opacity: 0.7;
+        }
+        .alert .btn-close:hover {
+            opacity: 1;
+        }
+
+        /* Update Car Form */
+        .card {
+            background: #E8ECE5; /* Slightly darker cream */
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(26, 60, 52, 0.2);
+        }
+        .form-label {
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            color: #1A3C34; /* Deep teal */
+            margin-bottom: 8px;
+        }
+        .form-control, .form-select {
+            background: #F5F5E8; /* Light cream */
+            border: 1px solid #A3B5A8; /* Muted teal */
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            color: #1A3C34;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #D4A017; /* Soft gold */
+            box-shadow: 0 0 5px rgba(212, 160, 23, 0.5);
+        }
+        .form-check-input:checked {
+            background-color: #D4A017; /* Soft gold */
+            border-color: #D4A017;
+        }
+        .form-check-label {
+            color: #1A3C34; /* Deep teal */
+        }
+        .btn-primary {
+            background: #D4A017; /* Soft gold */
+            border: none;
+            color: #1A3C34; /* Deep teal */
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: #1A3C34; /* Deep teal */
+            color: #F5F5E8; /* Light cream */
+        }
+        img.rounded {
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>Update Car</h1>
+        </div>
+        <div class="breadcrumbs">
+            <a href="{% url 'lindex' %}">Home</a>
+            <span>></span>
+            <span>Update Car</span>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="ftco-section">
+        <div class="container">
+            {% if msg %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+
+            <div class="card">
+                <form method="post" action="{% url 'update' pk=car.pk %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="stransmission" class="form-label">Transmission</label>
+                            <select class="form-select" id="stransmission" name="stransmission" required>
+                                <option value="" disabled {% if not car.stransmission %}selected{% endif %}>-------Select Transmission--------</option>
+                                <option value="Manual" {% if car.stransmission == "Manual" %}selected{% endif %}>Manual</option>
+                                <option value="Auto" {% if car.stransmission == "Auto" %}selected{% endif %}>Auto</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="sfuel" class="form-label">Fuel Type</label>
+                            <select class="form-select" id="sfuel" name="sfuel" required>
+                                <option value="" disabled {% if not car.sfuel %}selected{% endif %}>-------Select Fuel--------</option>
+                                <option value="CNG" {% if car.sfuel == "CNG" %}selected{% endif %}>CNG</option>
+                                <option value="Petrol" {% if car.sfuel == "Petrol" %}selected{% endif %}>Petrol</option>
+                                <option value="Diesel" {% if car.sfuel == "Diesel" %}selected{% endif %}>Diesel</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="cname" class="form-label">Car Name</label>
+                            <input type="text" class="form-control" id="cname" name="cname" value="{{ car.cname }}" placeholder="Enter car name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="price" class="form-label">Price (per day)</label>
+                            <input type="number" class="form-control" id="price" name="price" value="{{ car.price }}" placeholder="Enter price" step="0.01" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="milegae" class="form-label">Mileage (km/l)</label>
+                            <input type="number" class="form-control" id="milegae" name="milegae" value="{{ car.milegae }}" placeholder="Enter mileage" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="seats" class="form-label">Seating Capacity</label>
+                            <input type="number" class="form-control" id="seats" name="seats" value="{{ car.seats }}" placeholder="Enter seating capacity" min="1" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="luggage" class="form-label">Luggage Capacity (liters)</label>
+                            <input type="number" class="form-control" id="luggage" name="luggage" value="{{ car.luggage }}" placeholder="Enter luggage capacity" min="0" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="desc" class="form-label">Description</label>
+                            <textarea class="form-control" id="desc" name="desc" rows="3" placeholder="Enter car description">{{ car.desc }}</textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Features</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="air" name="air" {% if car.air %}checked{% endif %}>
+                                <label class="form-check-label" for="air">Air Conditioner</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="gps" name="gps" {% if car.gps %}checked{% endif %}>
+                                <label class="form-check-label" for="gps">GPS</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="cimage" class="form-label">Car Image</label>
+                            <div class="mb-3">
+                                <img src="{{ car.cimage.url }}" class="rounded" height="100" alt="{{ car.cname }}">
+                            </div>
+                            <input type="file" class="form-control" id="cimage" name="cimage" accept="image/*">
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Update Car</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </section>
-
-{% if msg %}
-<div class="alert alert-danger alert-dismissible fade show container mt-3" role="alert">
-    {{ msg }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endif %}
-
-<section class="ftco-section py-5">
-    <div class="container">
-        <div class="row g-5">
-            <!-- Contact Info Sidebar -->
-            <div class="col-lg-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <h4 class="card-title mb-4">Contact Information</h4>
-                        <div class="d-flex align-items-start mb-4">
-                            <span class="icon-map-o fs-3 me-3 text-primary"></span>
-                            <div>
-                                <h6>Address</h6>
-                                <p class="text-muted">198 West 21th Street, Suite 721 New York NY 10016</p>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-start mb-4">
-                            <span class="icon-mobile-phone fs-3 me-3 text-primary"></span>
-                            <div>
-                                <h6>Phone</h6>
-                                <a href="tel://1234567920" class="text-muted">+ 1235 2355 98</a>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-start">
-                            <span class="icon-envelope-o fs-3 me-3 text-primary"></span>
-                            <div>
-                                <h6>Email</h6>
-                                <a href="mailto:info@yoursite.com" class="text-muted">info@yoursite.com</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Update Car Form -->
-            <div class="col-lg-8">
-                <div class="card shadow-sm">
-                    <div class="card-body p-5">
-                        <form method="post" action="{% url 'update' pk=car.pk %}" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="stransmission" class="form-label">Transmission</label>
-                                    <select class="form-select form-select-lg" id="stransmission" name="stransmission" required>
-                                        <option value="" disabled {% if not car.stransmission %}selected{% endif %}>-------Select Transmission--------</option>
-                                        <option value="Manual" {% if car.stransmission == "Manual" %}selected{% endif %}>Manual</option>
-                                        <option value="Auto" {% if car.stransmission == "Auto" %}selected{% endif %}>Auto</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="sfuel" class="form-label">Fuel Type</label>
-                                    <select class="form-select form-select-lg" id="sfuel" name="sfuel" required>
-                                        <option value="" disabled {% if not car.sfuel %}selected{% endif %}>-------Select Fuel--------</option>
-                                        <option value="CNG" {% if car.sfuel == "CNG" %}selected{% endif %}>CNG</option>
-                                        <option value="Petrol" {% if car.sfuel == "Petrol" %}selected{% endif %}>Petrol</option>
-                                        <option value="Diesel" {% if car.sfuel == "Diesel" %}selected{% endif %}>Diesel</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="cname" class="form-label">Car Name</label>
-                                    <input type="text" class="form-control form-control-lg" id="cname" name="cname" value="{{ car.cname }}" placeholder="Enter car name" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="price" class="form-label">Price (per day)</label>
-                                    <input type="number" class="form-control form-control-lg" id="price" name="price" value="{{ car.price }}" placeholder="Enter price" step="0.01" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="milegae" class="form-label">Mileage (km/l)</label>
-                                    <input type="number" class="form-control form-control-lg" id="milegae" name="milegae" value="{{ car.milegae }}" placeholder="Enter mileage" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="seats" class="form-label">Seating Capacity</label>
-                                    <input type="number" class="form-control form-control-lg" id="seats" name="seats" value="{{ car.seats }}" placeholder="Enter seating capacity" min="1" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="luggage" class="form-label">Luggage Capacity (liters)</label>
-                                    <input type="number" class="form-control form-control-lg" id="luggage" name="luggage" value="{{ car.luggage }}" placeholder="Enter luggage capacity" min="0" required>
-                                </div>
-                                <div class="col-12">
-                                    <label for="desc" class="form-label">Description</label>
-                                    <textarea class="form-control form-control-lg" id="desc" name="desc" rows="3" placeholder="Enter car description">{{ car.desc }}</textarea>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label">Features</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="air" name="air" {% if car.air %}checked{% endif %}>
-                                        <label class="form-check-label" for="air">Air Conditioner</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="gps" name="gps" {% if car.gps %}checked{% endif %}>
-                                        <label class="form-check-label" for="gps">GPS</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <label for="cimage" class="form-label">Car Image</label>
-                                    <div class="mb-3">
-                                        <img src="{{ car.cimage.url }}" class="rounded" height="100" alt="{{ car.cname }}">
-                                    </div>
-                                    <input type="file" class="form-control" id="cimage" name="cimage" accept="image/*">
-                                </div>
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary btn-lg w-100">Update Car</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Embedded CSS -->
-<style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #f8f9fa;
-    }
-
-    .hero-wrap-2 {
-        position: relative;
-        background-size: cover;
-        background-position: center;
-    }
-
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-    }
-
-    .ftco-section {
-        padding: 60px 0;
-    }
-
-    .card {
-        border-radius: 10px;
-        transition: box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-control, .form-select {
-        border-radius: 5px;
-    }
-
-    .form-control-lg, .form-select-lg {
-        padding: 0.75rem 1rem;
-        font-size: 1.1rem;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        padding: 0.75rem 1.5rem;
-        font-weight: 500;
-    }
-
-    .btn-primary:hover {
-        background-color: #0056b3;
-        border-color: #0056b3;
-    }
-
-    .form-check-input:checked {
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-</style>
+</body>
 </html>
 {% endblock %}

@@ -7,267 +7,286 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sailing Through Kerala Backwaters</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
+        /* Reset and Base Styles */
+        * {
             margin: 0;
             padding: 0;
-            background: #f4f4f4;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #F5F5E8; /* Light cream */
+            color: #1A3C34; /* Deep teal */
+            line-height: 1.6;
         }
 
-        .hero-wrap-2 {
+        /* Hero Section */
+        .hero {
             position: relative;
-            background-size: cover;
-            background-position: center;
             height: 60vh;
             display: flex;
-            align-items: flex-end;
-            color: #fff;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            background-image: url('{% static 'images/blogbg.webp' %}');
+            background-size: cover;
+            background-position: center;
         }
-
-        .overlay {
+        .hero .overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: transparent; /* Teal overlay */
+            z-index: 0;
         }
-
-        .breadcrumbs {
-            font-size: 16px;
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+        .hero-content h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 48px;
+            color: #D4A017; /* Soft gold */
+            text-transform: uppercase;
+            letter-spacing: 2px;
             margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
 
+        /* Breadcrumbs */
+        .breadcrumbs {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 20px;
+            z-index: 2;
+        }
         .breadcrumbs a {
-            color: #fff;
+            color: #F5F5E8; /* Light cream */
             text-decoration: none;
+            font-size: 16px;
+            margin: 0 5px;
+            font-family: 'Montserrat', sans-serif;
         }
-
         .breadcrumbs a:hover {
-            color: #ffcc00;
+            color: #D4A017; /* Soft gold */
+        }
+        .breadcrumbs span {
+            color: #A3B5A8; /* Muted teal */
+            font-size: 16px;
+            margin: 0 5px;
         }
 
-        .bread {
-            font-size: 36px;
-            font-weight: 700;
-            margin: 0;
-        }
-
+        /* General Section Styles */
         .ftco-section {
-            padding: 80px 0;
-            background: #fff;
+            padding: 100px 0;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 20px;
         }
-
         h2 {
+            font-family: 'Cinzel', serif;
             font-size: 32px;
-            color: #333;
+            color: #1A3C34; /* Deep teal */
             margin-bottom: 20px;
         }
-
         p {
             font-size: 16px;
-            color: #666;
+            color: #1A3C34; /* Deep teal */
             line-height: 1.8;
             margin-bottom: 25px;
         }
 
+        /* Content Section */
         .img-fluid {
             max-width: 100%;
             height: auto;
-            border-radius: 8px;
+            border-radius: 15px;
             margin: 20px 0;
         }
-
         .tagcloud {
             margin: 20px 0;
         }
-
         .tag-cloud-link {
             display: inline-block;
             padding: 8px 15px;
-            background: #e9ecef;
+            background: #E8ECE5; /* Slightly darker cream */
             border-radius: 20px;
-            color: #555;
+            color: #1A3C34; /* Deep teal */
             text-decoration: none;
             margin: 5px;
-            transition: background 0.3s;
+            transition: background 0.3s, color 0.3s;
         }
-
         .tag-cloud-link:hover {
-            background: #007bff;
-            color: #fff;
+            background: #D4A017; /* Soft gold */
+            color: #F5F5E8; /* Light cream */
         }
 
+        /* Author Section */
         .about-author {
-            background: #f8f9fa;
-            border-radius: 12px;
+            background: #E8ECE5; /* Slightly darker cream */
+            border-radius: 15px;
             padding: 20px;
             display: flex;
             align-items: center;
+            margin: 40px 0;
         }
-
         .bio img {
             width: 100px;
             height: 100px;
             border-radius: 50%;
             margin-right: 20px;
         }
-
         .desc h3 {
+            font-family: 'Cinzel', serif;
             font-size: 24px;
-            color: #333;
+            color: #1A3C34; /* Deep teal */
             margin-bottom: 10px;
         }
+        .desc p {
+            font-size: 16px;
+            color: #1A3C34; /* Deep teal */
+        }
 
+        /* Comments Section */
         .comment-list {
             list-style: none;
             padding: 0;
         }
-
         .comment {
             margin-bottom: 30px;
             padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
+            background: #E8ECE5; /* Slightly darker cream */
+            border-radius: 15px;
         }
-
         .vcard img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             margin-right: 15px;
         }
-
         .comment-body h3 {
+            font-family: 'Cinzel', serif;
             font-size: 18px;
-            color: #333;
+            color: #1A3C34; /* Deep teal */
             margin-bottom: 5px;
         }
-
         .meta {
             font-size: 14px;
-            color: #888;
+            color: #A3B5A8; /* Muted teal */
             margin-bottom: 10px;
         }
-
         .reply {
-            color: #007bff;
+            color: #D4A017; /* Soft gold */
             text-decoration: none;
+            font-weight: 500;
         }
-
         .reply:hover {
-            text-decoration: underline;
+            color: #1A3C34; /* Deep teal */
         }
-
         .children {
             list-style: none;
             padding-left: 40px;
         }
 
+        /* Comment Form */
         .comment-form-wrap {
-            background: #f8f9fa;
+            background: #E8ECE5; /* Slightly darker cream */
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 15px;
+            margin-top: 40px;
         }
-
         .form-group {
             margin-bottom: 20px;
         }
-
         label {
             font-size: 16px;
-            color: #333;
+            color: #1A3C34; /* Deep teal */
             display: block;
             margin-bottom: 5px;
         }
-
         .form-control {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #A3B5A8; /* Muted teal */
             border-radius: 8px;
             font-size: 16px;
+            background: #F5F5E8; /* Light cream */
+            color: #1A3C34; /* Deep teal */
         }
-
         textarea.form-control {
             height: 150px;
             resize: vertical;
         }
-
         .btn-primary {
-            background: #007bff;
+            display: inline-block;
+            padding: 12px 30px;
+            background: #D4A017; /* Soft gold */
+            color: #1A3C34; /* Deep teal */
+            text-decoration: none;
+            border-radius: 5px;
             border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            color: #fff;
             font-weight: 500;
             text-transform: uppercase;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, color 0.3s ease;
         }
-
         .btn-primary:hover {
-            background: #0056b3;
+            background: #1A3C34; /* Deep teal */
+            color: #F5F5E8; /* Light cream */
         }
 
+        /* Sidebar */
         .sidebar {
             padding-left: 20px;
         }
-
         .sidebar-box {
-            background: #fff;
+            background: #E8ECE5; /* Slightly darker cream */
             padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
             margin-bottom: 30px;
         }
-
         .search-form .form-group {
             position: relative;
         }
-
         .search-form .icon {
             position: absolute;
             top: 50%;
             left: 15px;
             transform: translateY(-50%);
-            color: #888;
+            color: #A3B5A8; /* Muted teal */
         }
-
         .search-form .form-control {
             padding-left: 40px;
         }
-
         .categories h3, .sidebar-box h3 {
+            font-family: 'Cinzel', serif;
             font-size: 24px;
-            color: #333;
+            color: #1A3C34; /* Deep teal */
             margin-bottom: 20px;
         }
-
         .categories li {
             margin-bottom: 10px;
         }
-
         .categories a {
-            color: #555;
+            color: #1A3C34; /* Deep teal */
             text-decoration: none;
         }
-
         .categories a:hover {
-            color: #007bff;
+            color: #D4A017; /* Soft gold */
         }
-
         .block-21 {
             display: flex;
             align-items: center;
+            margin-bottom: 20px;
         }
-
         .blog-img {
             width: 80px;
             height: 80px;
@@ -276,25 +295,31 @@
             border-radius: 8px;
             margin-right: 15px;
         }
+        .block-21 .text h3 {
+            font-size: 18px;
+        }
+        .block-21 .meta {
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static 'images/blogbg.webp' %}');">
+    <!-- Hero Section -->
+    <section class="hero">
         <div class="overlay"></div>
-        <div class="container">
-            <div class="row no-gutters slider-text align-items-end justify-content-start">
-                <div class="col-md-9 ftco-animate pb-5">
-                    <p class="breadcrumbs">
-                        <span class="mr-2"><a href="{% url 'index' %}">Home <i class="ion-ios-arrow-forward"></i></a></span>
-                        <span class="mr-2"><a href="{% url 'blog' %}">Blog <i class="ion-ios-arrow-forward"></i></a></span>
-                        <span>Blog Single <i class="ion-ios-arrow-forward"></i></span>
-                    </p>
-                    <h1 class="mb-3 bread">Sailing Through Kerala Backwaters</h1>
-                </div>
-            </div>
+        <div class="hero-content">
+            <h1>Sailing Through Kerala Backwaters</h1>
+        </div>
+        <div class="breadcrumbs">
+            <a href="{% url 'index' %}">Home</a>
+            <span>></span>
+            <a href="{% url 'blog' %}">Blog</a>
+            <span>></span>
+            <span>Blog Single</span>
         </div>
     </section>
 
+    <!-- Content Section -->
     <section class="ftco-section">
         <div class="container">
             <div class="row">

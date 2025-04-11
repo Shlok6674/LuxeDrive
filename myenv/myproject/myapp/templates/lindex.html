@@ -5,167 +5,318 @@
 <html lang="en">
 <head>
     <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #F5F5E8; /* Light cream */
+            color: #1A3C34; /* Deep teal */
+            line-height: 1.6;
+        }
+
         /* Hero Section */
-        .hero-wrap {
+        .hero {
             position: relative;
             height: 100vh;
             display: flex;
             align-items: center;
-            background-size: cover;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
         }
-        
-        .overlay {
+        .hero video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            object-fit: cover;
+            z-index: -1;
+        }
+        .hero .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: none; /* Teal overlay */
+            z-index: 0;
+        }
+        .hero-content h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 70px;
+            color: #D4A017; /* Soft gold */
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        .hero-content p {
+            font-size: 24px;
+            color: #F5F5E8; /* Light cream */
+            max-width: 700px;
         }
 
-        .text {
-            color: white;
-            padding: 20px;
+        /* General Section Styles */
+        section {
+            padding: 100px 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 40px;
+            color: #1A3C34; /* Deep teal */
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .subheading {
+            font-size: 16px;
+            color: #D4A017; /* Soft gold */
+            text-transform: uppercase;
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
         }
 
         /* Services Section */
-        .services-wrap {
-            padding: 40px;
-            background: #fff;
-            border-radius: 0 10px 10px 0;
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
         }
-
-        .services {
-            transition: all 0.3s ease;
+        .service-card {
+            background: #E8ECE5; /* Slightly darker cream */
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .services:hover {
+        .service-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 20px rgba(26, 60, 52, 0.2);
+        }
+        .service-card .icon span {
+            font-size: 50px;
+            color: #D4A017; /* Soft gold */
+        }
+        .service-card h3 {
+            font-size: 22px;
+            color: #1A3C34; /* Deep teal */
+            margin: 20px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #D4A017; /* Soft gold */
+            color: #1A3C34; /* Deep teal */
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .btn:hover {
+            background: #1A3C34; /* Deep teal */
+            color: #F5F5E8; /* Light cream */
         }
 
         /* Featured Vehicles */
-        .car-wrap {
-            background: #fff;
-            border-radius: 10px;
+        .carousel-car {
+            padding: 0 20px;
+        }
+        .car-card {
+            background: #E8ECE5; /* Slightly darker cream */
+            border-radius: 15px;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease;
         }
-
-        .car-wrap:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        .car-card:hover {
+            transform: translateY(-10px);
         }
-
-        /* Buttons */
-        .btn-primary {
-            background: #007bff;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
+        .car-card .img {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
         }
-
-        .btn-primary:hover {
-            background: #0056b3;
-            transform: translateY(-2px);
-        }
-
-        /* Testimony Section */
-        .testimony-wrap {
-            background: #fff;
-            border-radius: 10px;
+        .car-card .text {
             padding: 20px;
-            transition: all 0.3s ease;
+        }
+        .car-card h2 a {
+            font-size: 24px;
+            color: #D4A017; /* Soft gold */
+            text-decoration: none;
+        }
+        .car-card .price {
+            font-size: 18px;
+            color: #1A3C34; /* Deep teal */
+        }
+        .car-card .btn-secondary {
+            background: #A3B5A8; /* Muted teal */
+            color: #1A3C34;
+        }
+        .car-card .btn-secondary:hover {
+            background: #D4A017; /* Soft gold */
+            color: #1A3C34;
         }
 
-        .testimony-wrap:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        /* About Section */
+        .about-section {
+            display: flex;
+            align-items: center;
+            background: #E8ECE5; /* Slightly darker cream */
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .about-img {
+            flex: 1;
+            height: 500px;
+            background-size: cover;
+            background-position: center;
+        }
+        .about-text {
+            flex: 1;
+            padding: 50px;
+        }
+        .about-text h2 {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .about-text p {
+            margin-bottom: 20px;
         }
 
         /* Counter Section */
-        .counter-wrap {
-            padding: 20px;
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            text-align: center;
         }
-
-        .number {
-            font-size: 2.5rem;
-            color: #007bff;
+        .counter-item .number {
+            font-size: 50px;
+            color: #D4A017; /* Soft gold */
             font-weight: bold;
         }
+        .counter-item span {
+            font-size: 18px;
+            color: #1A3C34; /* Deep teal */
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="hero-wrap ftco-degree-bg" style="background-image: url('{% static 'images/bg_1.jpg' %}');" data-stellar-background-ratio="0.5">
+    <!-- Hero Section -->
+    <section class="hero">
+        <video autoplay loop muted playsinline>
+            <source src="{% static 'videos/carback.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
         <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>Fast & Easy Way To Rent A Car</h1>
+            <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="ftco-section">
         <div class="container">
-            <div class="row no-gutters slider-text justify-content-start align-items-center justify-content-center">
-                <div class="col-lg-8 ftco-animate">
-                    <div class="text w-100 text-center mb-md-5 pb-md-5">
-                        <h1 class="mb-4">Fast & Easy Way To Rent A Car</h1>
-                        <p style="font-size: 18px;">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts</p>
-                        <a href="https://vimeo.com/45830194" class="icon-wrap popup-vimeo d-flex align-items-center mt-4 justify-content-center">
-                            <div class="icon d-flex align-items-center justify-content-center">
-                                <span class="ion-ios-play"></span>
-                            </div>
-                            <div class="heading-title ml-5">
-                                <span>Easy steps for renting a car</span>
-                            </div>
-                        </a>
-                    </div>
+            <h2>Better Way to Rent Your Perfect Cars</h2>
+            <div class="services-grid">
+                <div class="service-card ftco-animate">
+                    <div class="icon"><span class="flaticon-route"></span></div>
+                    <h3>Choose Your Pickup Location</h3>
+                </div>
+                <div class="service-card ftco-animate">
+                    <div class="icon"><span class="flaticon-handshake"></span></div>
+                    <h3>Select the Best Deal</h3>
+                </div>
+                <div class="service-card ftco-animate">
+                    <div class="icon"><span class="flaticon-rent"></span></div>
+                    <h3>Reserve Your Rental Car</h3>
                 </div>
             </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="{% url 'view' %}" class="btn">Reserve Your Perfect Car</a>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <section class="ftco-section ftco-no-pt bg-light">
+    <!-- Featured Vehicles Section -->
+    <section class="ftco-section">
         <div class="container">
-            <div class="row no-gutters">
-                <div class="col-md-12 featured-top">
-                    <div class="row no-gutters">
-                        <div class="col-md-12 d-flex align-items-center">
-                            <div class="services-wrap rounded-right w-100">
-                                <h3 class="heading-section mb-4">Better Way to Rent Your Perfect Cars</h3>
-                                <div class="row d-flex mb-4">
-                                    <div class="col-md-4 d-flex align-self-stretch ftco-animate">
-                                        <div class="services w-100 text-center">
-                                            <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-route"></span></div>
-                                            <div class="text w-100">
-                                                <h3 class="heading mb-2">Choose Your Pickup Location</h3>
-                                            </div>
-                                        </div>      
-                                    </div>
-                                    <div class="col-md-4 d-flex align-self-stretch ftco-animate">
-                                        <div class="services w-100 text-center">
-                                            <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-handshake"></span></div>
-                                            <div class="text w-100">
-                                                <h3 class="heading mb-2">Select the Best Deal</h3>
-                                            </div>
-                                        </div>      
-                                    </div>
-                                    <div class="col-md-4 d-flex align-self-stretch ftco-animate">
-                                        <div class="services w-100 text-center">
-                                            <div class="icon d-flex align-items-center justify-content-center"><span class="flaticon-rent"></span></div>
-                                            <div class="text w-100">
-                                                <h3 class="heading mb-2">Reserve Your Rental Car</h3>
-                                            </div>
-                                        </div>      
-                                    </div>
-                                </div>
-                                <p><a href="#" class="btn btn-primary py-3 px-4">Reserve Your Perfect Car</a></p>
+            <span class="subheading">What We Offer</span>
+            <h2>Featured Vehicles</h2>
+            <div class="carousel-car owl-carousel">
+                {% for car in featured_cars %}
+                <div class="item">
+                    <div class="car-card ftco-animate">
+                        <div class="img" style="background-image: url('{{ car.cimage.url }}');"></div>
+                        <div class="text">
+                            <h2><a href="{% url 'details' car.pk %}">{{ car.cname }}</a></h2>
+                            <div class="d-flex mb-3">
+                                <span class="cat">{{ car.cname.split|first }}</span>
+                                <p class="price ml-auto">₹{{ car.cprice }} <span>/day</span></p>
                             </div>
+                            <p class="d-flex mb-0">
+                                <a href="{% url 'cart' car.pk %}" class="btn btn-primary mr-1">Book Now</a>
+                                <a href="{% url 'details' car.pk %}" class="btn btn-secondary ml-1">Details</a>
+                            </p>
                         </div>
                     </div>
+                </div>
+                {% empty %}
+                <p>No featured cars available.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="ftco-section about-section">
+        <div class="about-img" style="background-image: url({% static 'images/about.jpg' %});"></div>
+        <div class="about-text ftco-animate">
+            <span class="subheading">About Us</span>
+            <h2>Welcome to LuxeDrive</h2>
+            <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
+            <p><a href="#" class="btn">Search Vehicle</a></p>
+        </div>
+    </section>
+
+    <!-- Counter Section -->
+    <section class="ftco-section">
+        <div class="container">
+            <h2>Our Achievements</h2>
+            <div class="counter-grid">
+                <div class="counter-item ftco-animate">
+                    <strong class="number" data-number="15">0</strong>
+                    <span>Years Experienced</span>
+                </div>
+                <div class="counter-item ftco-animate">
+                    <strong class="number" data-number="798">0</strong>
+                    <span>Total Cars</span>
+                </div>
+                <div class="counter-item ftco-animate">
+                    <strong class="number" data-number="8565">0</strong>
+                    <span>Happy Customers</span>
+                </div>
+                <div class="counter-item ftco-animate">
+                    <strong class="number" data-number="45">0</strong>
+                    <span>Total Branches</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Rest of the sections remain the same, just removing the form section -->
-    <!-- Add this JavaScript at the bottom -->
+    <!-- JavaScript -->
     <script>
-        // Simple animation for counters
+        // Counter Animation
         document.addEventListener('DOMContentLoaded', () => {
             const counters = document.querySelectorAll('.number');
             counters.forEach(counter => {
@@ -186,7 +337,7 @@
             });
         });
 
-        // Smooth scroll for buttons
+        // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();

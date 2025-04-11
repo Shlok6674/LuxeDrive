@@ -5,122 +5,172 @@
 <html lang="en">
 <head>
     <style>
+        /* Base Styles */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #F5F5E8;
+            color: #1A3C34;
+            line-height: 1.6;
+        }
+
         /* Hero Section */
         .hero-wrap-2 {
             position: relative;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background-size: cover;
             background-position: center;
         }
 
         .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        .breadcrumbs {
-            color: #fff;
-            font-size: 14px;
+            background: rgba(26, 60, 52, 0.7);
         }
 
         .bread {
-            color: #fff;
-            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            font-size: 48px;
+            color: #D4A017;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
 
-        /* Contact Section */
+        .breadcrumbs {
+            color: #F5F5E8;
+        }
+
+        /* Form Section */
         .contact-section {
-            padding: 7em 0;
+            padding: 80px 0;
         }
 
-        .contact-info .d-flex {
-            transition: all 0.3s ease;
-            background: #fff;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .contact-info .d-flex:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-
-        .contact-info .icon {
-            background: #007bff;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .contact-info .icon span {
-            color: white;
-        }
-
-        /* Form Styling */
         .contact-form {
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #E8ECE5;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(26, 60, 52, 0.1);
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
-            position: relative;
+            margin-bottom: 25px;
         }
 
         .form-control {
-            border: 2px solid #e9ecef;
-            border-radius: 5px;
-            padding: 12px 15px;
+            background: #F5F5E8;
+            border: 2px solid #A3B5A8;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #1A3C34;
             transition: all 0.3s ease;
         }
 
         .form-control:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0,123,255,0.3);
+            border-color: #D4A017;
+            box-shadow: 0 0 10px rgba(212, 160, 23, 0.2);
         }
 
         select.form-control {
-            appearance: none;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") no-repeat right 15px center;
+            cursor: pointer;
         }
 
         .btn-primary {
-            background: #007bff;
+            background: #D4A017;
+            color: #1A3C34;
             border: none;
-            border-radius: 5px;
-            padding: 12px 30px;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 8px;
             transition: all 0.3s ease;
         }
 
         .btn-primary:hover {
-            background: #0056b3;
-            transform: translateY(-2px);
+            background: #1A3C34;
+            color: #F5F5E8;
+            transform: translateY(-3px);
         }
 
-        /* Alert */
+        /* Alert Styling */
         .alert-danger {
+            background: #fff;
+            border-left: 4px solid #D4A017;
+            color: #1A3C34;
+            padding: 15px;
             margin: 20px auto;
-            max-width: 600px;
-            border-radius: 5px;
+            max-width: 800px;
+            border-radius: 8px;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
-            .contact-section {
-                padding: 4em 0;
+            .contact-form {
+                padding: 20px;
             }
             
-            .contact-info .d-flex {
-                margin-bottom: 15px;
+            .bread {
+                font-size: 36px;
             }
         }
+
+        /* Form Styling from update.html */
+        .card {
+            background: #E8ECE5;
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(26, 60, 52, 0.2);
+        }
+        .form-label {
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            color: #1A3C34;
+            margin-bottom: 8px;
+        }
+        .form-control, .form-select {
+            background: #F5F5E8;
+            border: 1px solid #A3B5A8;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            color: #1A3C34;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #D4A017;
+            box-shadow: 0 0 5px rgba(212, 160, 23, 0.5);
+        }
+        .btn-primary {
+            background: #D4A017;
+            border: none;
+            color: #1A3C34;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: #1A3C34;
+            color: #F5F5E8;
+        }
+        /* Alert Styling */
+        .alert {
+            background: #E8ECE5;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            color: #1A3C34;
+            border: 1px solid #A3B5A8;
+        }
+        .alert-danger {
+            background: #D4A017;
+            color: #1A3C34;
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('{% static 'images/bg_3.jpg' %}');" data-stellar-background-ratio="0.5">
@@ -138,92 +188,69 @@
         </div>
     </section>
 
-    {% if msg %}
-    <div class="alert alert-danger" role="alert">
-        {{msg}}
-    </div>
-    {% endif %}
-
     <section class="ftco-section contact-section">
         <div class="container">
-            <div class="row d-flex mb-5 contact-info">
-                <div class="col-md-4">
-                    <div class="row mb-5">
-                        <div class="col-md-12">
-                            <div class="border w-100 p-4 rounded mb-2 d-flex">
-                                <div class="icon mr-3">
-                                    <span class="icon-map-o"></span>
-                                </div>
-                                <p><span>Address:</span> 198 West 21th Street, Suite 721 New York NY 10016</p>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="border w-100 p-4 rounded mb-2 d-flex">
-                                <div class="icon mr-3">
-                                    <span class="icon-mobile-phone"></span>
-                                </div>
-                                <p><span>Phone:</span> <a href="tel://1234567920">+ 1235 2355 98</a></p>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="border w-100 p-4 rounded mb-2 d-flex">
-                                <div class="icon mr-3">
-                                    <span class="icon-envelope-o"></span>
-                                </div>
-                                <p><span>Email:</span> <a href="mailto:info@yoursite.com">info@yoursite.com</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8 block-9 mb-md-5">
-                    <form method="post" action="{% url 'add' %}" class="bg-light p-5 contact-form" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <select name="stransmission" class="form-control" required>
-                                <option value="">-------Select Transmission--------</option>
+            {% if msg %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+
+            <div class="card">
+                <form method="post" action="{% url 'add' %}" class="contact-form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="stransmission" class="form-label">Transmission</label>
+                            <select class="form-select" id="stransmission" name="stransmission" required>
+                                <option value="" disabled selected>-------Select Transmission--------</option>
                                 <option value="Manual">Manual</option>
                                 <option value="Auto">Auto</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <select name="sfuel" class="form-control" required>
-                                <option value="">-------Select Fuel--------</option>
+                        <div class="col-md-6">
+                            <label for="sfuel" class="form-label">Fuel Type</label>
+                            <select class="form-select" id="sfuel" name="sfuel" required>
+                                <option value="" disabled selected>-------Select Fuel--------</option>
                                 <option value="CNG">CNG</option>
                                 <option value="Petrol">Petrol</option>
                                 <option value="Diesel">Diesel</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Car Name" name="cname" required>
+                        <div class="col-md-6">
+                            <label for="cname" class="form-label">Car Name</label>
+                            <input type="text" class="form-control" id="cname" name="cname" placeholder="Enter car name" required>
                         </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" placeholder="Car Price ($)" name="cprice" min="0" step="1" required>
+                        <div class="col-md-6">
+                            <label for="cprice" class="form-label">Price (per day)</label>
+                            <input type="number" class="form-control" id="cprice" name="cprice" placeholder="Enter price" min="0" step="1" required>
                         </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" placeholder="Mileage (km/l)" name="milegae" min="0" step="0.1" required>
+                        <div class="col-md-6">
+                            <label for="milegae" class="form-label">Mileage (km/l)</label>
+                            <input type="number" class="form-control" id="milegae" name="milegae" placeholder="Enter mileage" min="0" step="0.1" required>
                         </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" placeholder="Seating Capacity" name="seats" min="1" max="20" required>
+                        <div class="col-md-6">
+                            <label for="seats" class="form-label">Seating Capacity</label>
+                            <input type="number" class="form-control" id="seats" name="seats" placeholder="Enter seating capacity" min="1" max="20" required>
                         </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" placeholder="Luggage Capacity (liters)" name="luggage" min="0" required>
+                        <div class="col-md-6">
+                            <label for="luggage" class="form-label">Luggage Capacity (liters)</label>
+                            <input type="number" class="form-control" id="luggage" name="luggage" placeholder="Enter luggage capacity" min="0" required>
                         </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Car Description" name="desc" required>
+                        <div class="col-12">
+                            <label for="desc" class="form-label">Description</label>
+                            <textarea class="form-control" id="desc" name="desc" rows="3" placeholder="Enter car description" required></textarea>
                         </div>
-                        <div class="form-group">
-                            <input type="file" class="form-control" name="cimage" accept="image/*" required>
+                        <div class="col-12">
+                            <label for="cimage" class="form-label">Car Image</label>
+                            <input type="file" class="form-control" id="cimage" name="cimage" accept="image/*" required>
                         </div>
-                        <div class="form-group">
-                            <input type="submit" value="Add Car" class="btn btn-primary py-3 px-5">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Add Car</button>
                         </div>
-                    </form>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <div id="map" class="bg-white" style="height: 400px;"></div>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </section>

@@ -1,18 +1,36 @@
 {% extends 'lheader.html' %}
 {% load static %}
 {% block content %}
-<section class="ftco-section py-5" style="background: #ffffff;">
+<!-- Hero Section -->
+<div class="hero-section" style="
+    background: linear-gradient(rgba(26, 60, 52, 0.7), rgba(26, 60, 52, 0.7)), url('{% static 'images/bg_3.jpg' %}');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: -80px;
+">
+    <div class="container text-center">
+        <h1 class="text-white mb-3" style="font-family: 'Cinzel', serif; font-size: 4rem; font-weight: 700; color: #D4A017;">Our Fleet</h1>
+        <p style="color: #F5F5E8; font-size: 1.5rem;">Discover Our Premium Collection of Vehicles</p>
+    </div>
+</div>
+
+<section class="ftco-section py-5" style="background: #F5F5E8; position: relative;">
     <div class="container">
         <div class="row mb-5 align-items-center justify-content-between">
             <div class="col-12 col-md-6 mb-4 mb-md-0">
-                <h1 class="text-dark fw-bold" style="position: relative; display: inline-block;">
+                <h1 class="fw-bold" style="font-family: 'Cinzel', serif; color: #1A3C34; position: relative; display: inline-block;">
                     Available Cars
-                    <span class="underline-effect" style="position: absolute; bottom: -10px; left: 0; width: 50px; height: 4px; background: #00b4d8; border-radius: 2px;"></span>
+                    <span class="underline-effect" style="position: absolute; bottom: -10px; left: 0; width: 50px; height: 4px; background: #D4A017; border-radius: 2px;"></span>
                 </h1>
             </div>
             <div class="col-12 col-md-4">
                 <div class="sort-wrapper position-relative">
-                    <select id="sortSelect" class="form-select shadow-sm border-0 py-2 px-4 w-100" style="border-radius: 25px; background: #f8f9fa;">
+                    <select id="sortSelect" class="form-select shadow-sm border-0 py-2 px-4 w-100" 
+                            style="border-radius: 25px; background: #E8ECE5; color: #1A3C34; font-family: 'Montserrat', sans-serif;">
                         <option value="name-asc">Name (A-Z)</option>
                         <option value="name-desc">Name (Z-A)</option>
                         <option value="price-asc">Price (Low-High)</option>
@@ -27,36 +45,36 @@
             {% for i in car %}
             <div class="col-12 col-sm-6 col-lg-4 car-item">
                 <div class="card h-100 border-0 shadow-sm position-relative overflow-hidden" 
-                     style="border-radius: 20px; background: #ffffff;">
+                     style="border-radius: 20px; background: #E8ECE5;">
                     <div class="card-img-top position-relative">
                         <img src="{{ i.cimage.url }}" 
                              class="img-fluid w-100 object-fit-cover" 
                              alt="{{ i.cname }}"
                              loading="lazy"
-                             style="height: 220px; border-radius: 20px 20px 0 0;">
+                             style="height: 250px; border-radius: 20px 20px 0 0;">
                         <div class="overlay"></div>
                         <span class="badge position-absolute top-0 end-0 m-3 py-2 px-3" 
-                              style="background: #00b4d8; border-radius: 15px;">
+                              style="background: #D4A017; border-radius: 15px; color: #1A3C34;">
                             {{ i.stransmission }}
                         </span>
                     </div>
                     <div class="card-body p-4 d-flex flex-column">
-                        <h5 class="card-title mb-3 fw-bold">
+                        <h5 class="card-title mb-3 fw-bold" style="font-family: 'Cinzel', serif;">
                             <a href="{% url 'details' pk=i.pk %}" 
-                               class="text-dark text-decoration-none stretched-link">
+                               class="text-decoration-none" style="color: #1A3C34;">
                                 {{ i.cname }}
                             </a>
                         </h5>
-                        <p class="price mb-4 text-primary fw-bold" style="font-size: 1.3rem;">
-                            ₹{{ i.cprice }} <span class="text-muted fs-6 fw-normal">/day</span>
+                        <p class="price mb-4 fw-bold" style="font-size: 1.3rem; color: #D4A017;">
+                            ₹{{ i.cprice }} <span style="color: #1A3C34; font-size: 0.9rem;">/day</span>
                         </p>
-                        <div class="mt-auto d-flex gap-2">
+                        <div class="mt-auto d-flex justify-content-between gap-4" style="position: relative; z-index: 2;">
                             <a href="{% url 'update' pk=i.pk %}" 
-                               class="btn btn-outline-primary w-100 fw-medium"
-                               style="border-radius: 25px; padding: 10px;">Update</a>
+                               class="btn btn-outline-primary w-45 fw-medium"
+                               style="border-radius: 25px; padding: 10px; flex-basis: 45%;">Update</a>
                             <a href="{% url 'delete' pk=i.pk %}" 
-                               class="btn btn-outline-danger w-100 fw-medium"
-                               style="border-radius: 25px; padding: 10px;"
+                               class="btn btn-outline-danger w-45 fw-medium"
+                               style="border-radius: 25px; padding: 10px; flex-basis: 45%;"
                                onclick="return confirm('Are you sure you want to delete {{ i.cname|escapejs }}?');">Delete</a>
                         </div>
                     </div>
@@ -67,9 +85,9 @@
         </div>
         {% else %}
         <div class="text-center py-5">
-            <h3 class="text-dark fw-bold">No Cars Available</h3>
-            <p class="text-muted mt-3">New vehicles coming soon!</p>
-            <div class="spinner-border text-primary mt-4" role="status">
+            <h3 class="fw-bold" style="font-family: 'Cinzel', serif; color: #1A3C34;">No Cars Available</h3>
+            <p style="color: #666;">New vehicles coming soon!</p>
+            <div class="spinner-border" style="color: #D4A017;" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
@@ -77,22 +95,27 @@
     </div>
 </section>
 
+<!-- Scroll to Top Button -->
+<button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to Top">
+    <i class="icon-arrow-up"></i>
+</button>
+
 <style>
     :root {
-        --primary: #00b4d8;
-        --danger: #ff6b6b;
-        --light: #f8f9fa;
+        --primary: #D4A017;
+        --secondary: #1A3C34;
+        --light: #F5F5E8;
         --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     body {
-        font-family: 'Poppins', sans-serif;
-        background-color: #ffffff;
+        font-family: 'Montserrat', sans-serif;
+        background-color: var(--light);
     }
 
     .ftco-section {
         padding: 5rem 0;
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        background: linear-gradient(135deg, #F5F5E8 0%, #E8ECE5 100%);
     }
 
     .sort-wrapper::before {
@@ -113,7 +136,7 @@
     }
 
     .form-select:focus {
-        box-shadow: 0 6px 20px rgba(0,180,216,0.2);
+        box-shadow: 0 6px 20px rgba(212,160,23,0.2);
         border-color: var(--primary);
     }
 
@@ -142,7 +165,7 @@
     }
 
     .card:hover .overlay {
-        background: linear-gradient(to bottom, rgba(0,180,216,0.1), rgba(0,0,0,0.4));
+        background: linear-gradient(to bottom, rgba(212,160,23,0.1), rgba(0,0,0,0.4));
     }
 
     .card-title a:hover {
@@ -151,12 +174,14 @@
 
     .btn-outline-primary {
         border-color: var(--primary);
-        color: var(--primary);
+        color: var(--secondary);
+        background: transparent;
+        font-family: 'Montserrat', sans-serif;
     }
 
     .btn-outline-primary:hover {
         background: var(--primary);
-        color: white;
+        color: var(--secondary);
         transform: scale(1.05);
     }
 
@@ -177,14 +202,14 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0,180,216,0);
+        background: rgba(212,160,23,0);
         transition: var(--transition);
         pointer-events: none;
         border-radius: 20px;
     }
 
     .card:hover .card-hover-effect {
-        background: rgba(0,180,216,0.05);
+        background: rgba(212,160,23,0.05);
     }
 
     .fade-in {
@@ -219,6 +244,34 @@
             padding: 8px;
             font-size: 0.9rem;
         }
+    }
+
+    .scroll-to-top {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #D4A017;
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+    }
+
+    .scroll-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .scroll-to-top:hover {
+        background: #0090aa;
+        transform: translateY(-3px);
     }
 </style>
 
@@ -280,6 +333,24 @@ document.addEventListener('DOMContentLoaded', function() {
             
             btn.appendChild(ripple);
             setTimeout(() => ripple.remove(), 600);
+        });
+    });
+
+    // Add scroll to top functionality
+    const scrollBtn = document.getElementById('scrollToTop');
+    
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollBtn.classList.add('visible');
+        } else {
+            scrollBtn.classList.remove('visible');
+        }
+    });
+
+    scrollBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
         });
     });
 });

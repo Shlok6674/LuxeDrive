@@ -7,13 +7,258 @@
     nav, .navbar, header { display: none !important; }
 </style>
 
-<div class="login-wrapper min-vh-100 d-flex align-items-center justify-content-center py-5">
-    <div class="login-box">
-        <div class="box-content p-4">
-            <div class="text-center mb-4">
-                <h3 class="fw-bold text-dark">JoyRide</h3>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #F5F5E8; /* Light cream */
+            color: #1A3C34; /* Deep teal */
+            line-height: 1.6;
+        }
 
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            background-image: url('{% static 'images/bg_3.jpg' %}');
+            background-size: cover;
+            background-position: center;
+        }
+        .hero .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Adjusted overlay for contrast */
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+        .hero-content h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 48px;
+            color: #D4A017; /* Soft gold */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Breadcrumbs */
+        .breadcrumbs {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 20px;
+            z-index: 2;
+        }
+        .breadcrumbs a {
+            color: #F5F5E8; /* Light cream */
+            text-decoration: none;
+            font-size: 16px;
+            margin: 0 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .breadcrumbs a:hover {
+            color: #D4A017; /* Soft gold */
+        }
+        .breadcrumbs span {
+            color: #A3B5A8; /* Muted teal */
+            font-size: 16px;
+            margin: 0 5px;
+        }
+
+        /* Main Content */
+        .ftco-section {
+            padding: 100px 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Alerts */
+        .alert {
+            background: #E8ECE5; /* Slightly darker cream */
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            color: #1A3C34; /* Deep teal */
+            border: 1px solid #A3B5A8; /* Muted teal */
+        }
+        .alert-danger {
+            background: #D4A017; /* Soft gold */
+            color: #1A3C34;
+        }
+        .alert .btn-close {
+            color: #1A3C34;
+            opacity: 0.7;
+        }
+        .alert .btn-close:hover {
+            opacity: 1;
+        }
+
+        /* Login Form */
+        .login-card {
+            background: #E8ECE5; /* Slightly darker cream */
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 400px;
+            margin: 0 auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(26, 60, 52, 0.2);
+        }
+        .login-card .brand {
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            color: #D4A017; /* Soft gold */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #A3B5A8; /* Muted teal */
+        }
+        .form-control {
+            background: #F5F5E8; /* Light cream */
+            border: 1px solid #A3B5A8; /* Muted teal */
+            border-radius: 8px;
+            padding: 12px 15px 12px 40px;
+            font-size: 16px;
+            color: #1A3C34;
+        }
+        .form-control:focus {
+            border-color: #D4A017; /* Soft gold */
+            box-shadow: 0 0 5px rgba(212, 160, 23, 0.5);
+        }
+        .btn-primary {
+            background: #D4A017; /* Soft gold */
+            border: none;
+            color: #1A3C34; /* Deep teal */
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-weight: 500;
+            width: 100%;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: #1A3C34; /* Deep teal */
+            color: #F5F5E8; /* Light cream */
+        }
+        .social-login {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #fff;
+            margin: 0 10px;
+            transition: background 0.3s ease;
+        }
+        .google-btn {
+            background: #db4437;
+        }
+        .google-btn:hover {
+            background: #c13524;
+        }
+        .fb-btn {
+            background: #4267b2;
+        }
+        .fb-btn:hover {
+            background: #365899;
+        }
+        .form-check-input {
+            border: 1px solid #A3B5A8; /* Muted teal */
+            width: 16px;
+            height: 16px;
+        }
+        .form-check-input:checked {
+            background-color: #D4A017; /* Soft gold */
+            border-color: #D4A017;
+        }
+        .form-check-label {
+            color: #1A3C34; /* Deep teal */
+            margin-left: 8px;
+        }
+        .text-sm {
+            font-size: 14px;
+        }
+        a.text-primary {
+            color: #D4A017; /* Soft gold */
+            text-decoration: none;
+        }
+        a.text-primary:hover {
+            color: #1A3C34; /* Deep teal */
+            text-decoration: underline;
+        }
+
+        @media (max-width: 576px) {
+            .login-card {
+                max-width: 300px;
+                padding: 20px;
+            }
+            .hero {
+                height: 40vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>Login</h1>
+        </div>
+        <div class="breadcrumbs">
+            <a href="{% url 'index' %}">Home</a>
+            <span>></span>
+            <span>Login</span>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="ftco-section">
+        <div class="container">
             {% if msg %}
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 {{ msg }}
@@ -21,184 +266,60 @@
             </div>
             {% endif %}
 
-            <form method="post" action="{% url 'login' %}" class="needs-validation" novalidate>
-                {% csrf_token %}
-                <div class="input-group mb-3">
-                    <span class="input-icon"><i class="fas fa-envelope"></i></span>
-                    <input type="email" class="form-control simple-input" id="email" name="email" placeholder="Email" required>
+            <div class="login-card">
+                <div class="brand">JoyRide</div>
+
+                <form method="post" action="{% url 'login' %}" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-icon"><i class="fas fa-lock"></i></span>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </form>
+
+                <div class="social-login mt-4">
+                    <div class="d-flex justify-content-center gap-3">
+                        <button class="btn social-btn google-btn" onclick="alert('Google login coming soon!')">
+                            <i class="fab fa-google"></i>
+                        </button>
+                        <button class="btn social-btn fb-btn" onclick="alert('Facebook login coming soon!')">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <div class="input-group mb-4">
-                    <span class="input-icon"><i class="fas fa-lock"></i></span>
-                    <input type="password" class="form-control simple-input" id="password" name="password" placeholder="Password" required>
+                <div class="d-flex justify-content-between mt-3 text-sm">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Remember</label>
+                    </div>
+                    <a href="{% url 'fpass' %}" class="text-primary">Forgot?</a>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 py-2">Sign In</button>
-            </form>
-
-            <div class="social-login mt-4 text-center">
-                <div class="d-flex gap-2 justify-content-center">
-                    <button class="btn social-btn google-btn" onclick="alert('Google login coming soon!')">
-                        <i class="fab fa-google"></i>
-                    </button>
-                    <button class="btn social-btn fb-btn" onclick="alert('Facebook login coming soon!')">
-                        <i class="fab fa-facebook-f"></i>
-                    </button>
+                <div class="text-center mt-3">
+                    <a href="{% url 'signup' %}" class="text-primary">Sign Up</a>
                 </div>
-            </div>
-
-            <div class="d-flex justify-content-between mt-3 text-sm">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="rememberMe">
-                    <label class="form-check-label text-muted" for="rememberMe">Remember</label>
-                </div>
-                <a href="{% url 'fpass' %}" class="text-primary">Forgot?</a>
-            </div>
-
-            <div class="text-center mt-3">
-                <a href="{% url 'signup' %}" class="text-primary">Sign Up</a>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 
-<style>
-    :root {
-        --primary: #00b4d8;
-        --white: #ffffff;
-        --light-bg: #f8f9fa;
-        --transition: all 0.3s ease;
-    }
-
-    body {
-        font-family: 'Poppins', sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-
-    .login-wrapper {
-        background: var(--white);
-    }
-
-    .login-box {
-        width: 300px;
-        background: var(--white);
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-
-    .box-content {
-        padding: 1.5rem;
-    }
-
-    .input-group {
-        position: relative;
-    }
-
-    .input-icon {
-        position: absolute;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--primary);
-    }
-
-    .simple-input {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 0.5rem 0.5rem 0.5rem 2.5rem;
-        background: var(--light-bg);
-        font-size: 0.9rem;
-    }
-
-    .simple-input:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 5px rgba(0,180,216,0.3);
-        background: #fff;
-    }
-
-    .btn-primary {
-        background: var(--primary);
-        border: none;
-        border-radius: 8px;
-        color: #fff;
-    }
-
-    .btn-primary:hover {
-        background: #0077b6;
-    }
-
-    .social-btn {
-        width: 35px;
-        height: 35px;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        color: #fff;
-    }
-
-    .google-btn {
-        background: #db4437;
-    }
-
-    .google-btn:hover {
-        background: #c13524;
-    }
-
-    .fb-btn {
-        background: #4267b2;
-    }
-
-    .fb-btn:hover {
-        background: #365899;
-    }
-
-    .form-check-input {
-        border: 1px solid #ccc;
-        width: 14px;
-        height: 14px;
-    }
-
-    .form-check-input:checked {
-        background: var(--primary);
-        border-color: var(--primary);
-    }
-
-    .text-sm {
-        font-size: 0.85rem;
-    }
-
-    a {
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-
-    @media (max-width: 576px) {
-        .login-box {
-            width: 260px;
-        }
-        .box-content {
-            padding: 1.25rem;
-        }
-    }
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('.needs-validation');
-    form.addEventListener('submit', function(event) {
-        if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        form.classList.add('was-validated');
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.needs-validation');
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        });
     });
-});
-</script>
-
+    </script>
+</body>
+</html>
 {% endblock %}

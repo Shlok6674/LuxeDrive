@@ -653,3 +653,4 @@ def pricing(request):
         'car': cars,
     }
     return render(request, 'pricing.html', context)
+
